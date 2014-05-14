@@ -7,7 +7,7 @@ Features (More coming):
 	
 	- hard real-time scheduling
 	- rate monotonic scheduler
-	- priority inheritence 
+	- priority inheritance 
 	- synchronization mechanisms
 
 Supported Architectures (More coming):
