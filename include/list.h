@@ -36,63 +36,63 @@ typedef struct {
 
 /*! \brief
  */
-void list_destroy(void);
+void list_destroy(list_t list);
 
 /*! \brief
  */
-void list_head_set(link_t *head_new);
+void list_head_set(list_t list, link_t *head_new);
 
 /*! \brief
  */
-link_t *list_get_head(void);
+link_t *list_get_head(list_t list);
 	
 /*! \brief
  */
-link_t *list_get_tail(void);
+link_t *list_get_tail(list_t list);
 
 /*! \brief
  */
-link_t *list_remove_head(void);
+link_t *list_remove_head(list_t list);
 	
 /*! \brief
  */
-link_t *list_remove_tail(void);
+link_t *list_remove_tail(list_t list);
 
 /*! \brief
  */
-void list_add_head(link_t *link_new);
+void list_add_head(list_t list, link_t *link_new);
 
 /*! \brief
  */
-void list_add_tail(link_t *link_new);
+void list_add_tail(list_t list, link_t *link_new);
 	
 /*! \brief
  */
-void list_insert_link(link_t *link_prev, link_t *link_new);
+void list_insert_link(list_t list, link_t *link_prev, link_t *link_new);
 	
 /*! \brief
  */
-link_t list_remove_link(link_t *link_old);
+link_t list_remove_link(list_t list, link_t *link_old);
 
 /*! \def list_new
  *  \brief Creates a new list.
  */
-#define list_new(name,type,head,tail) list_t name = {type, &head, &tail, lock_init()}
+#define list_new(name,type,head,tail) list_t name = {type, head, tail, lock_init()}
 
 /*! \def list_new_nopreempt
  *  \brief Creates a new list.
  */
-#define list_new_nopreempt(name,type,head,tail) list_t name = {type, &head, &tail, 
+#define list_new_nopreempt(name,type,head,tail) list_t name = {type, head, tail, 
 								lock_init_nopreempt()}
 
 /*! \def list_init
  *  \brief initializes members of an embedded list
  */
-#define list_init(type, head, tail) {type, &head, &tail, lock_init()}
+#define list_init(type, head, tail) {type, head, tail, lock_init()}
 
 /*! \def list_init_nopreempt
  *  \brief initializes members of an embedded list
  */
-#define list_init_nopreempt(type, head, tail) {type, &head, &tail, lock_init_nopreempt()}
+#define list_init_nopreempt(type, head, tail) {type, head, tail, lock_init_nopreempt()}
 
 #endif // KERNEL_LIST_H
