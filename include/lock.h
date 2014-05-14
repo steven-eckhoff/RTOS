@@ -25,7 +25,7 @@ typedef struct {
 				atomic_init(0),
 				NULL,
 				NULL,
-\				NULL }	
+				NULL }	
 /*! \def lock_new_nopreempt
  */
 #define lock_new_nopreempt(name) lock_t name = {
