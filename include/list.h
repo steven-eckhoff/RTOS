@@ -12,6 +12,8 @@
 
 /*! \typedef link_t
  *  \brief Provides link member for the linked list structure
+ *  \details All links will have space for two pointers. This type will be used
+ *   for double and single link structures.
  */
 typedef struct link_t_ {
 	struct link_t_ *next;
@@ -26,6 +28,7 @@ typedef enum {SINGLE, DOUBLE} link_num_t;
 /*!
  * \typedef list
  * \brief linked list data structure
+ * \details Currently all list and derived data structures will have a lock
  */
 typedef struct {
 	link_num_t type;
@@ -36,43 +39,43 @@ typedef struct {
 
 /*! \brief
  */
-void list_destroy(list_t list);
+void list_destroy(list_t *list);
 
 /*! \brief
  */
-void list_head_set(list_t list, link_t *head_new);
+void list_head_set(list_t *list, link_t *head_new);
 
 /*! \brief
  */
-link_t *list_get_head(list_t list);
+link_t *list_get_head(list_t *list);
 	
 /*! \brief
  */
-link_t *list_get_tail(list_t list);
+link_t *list_get_tail(list_t *list);
 
 /*! \brief
  */
-link_t *list_remove_head(list_t list);
+link_t *list_remove_head(list_t *list);
 	
 /*! \brief
  */
-link_t *list_remove_tail(list_t list);
+link_t *list_remove_tail(list_t *list);
 
 /*! \brief
  */
-void list_add_head(list_t list, link_t *link_new);
+void list_add_head(list_t *list, link_t *link_new);
 
 /*! \brief
  */
-void list_add_tail(list_t list, link_t *link_new);
+void list_add_tail(list_t *list, link_t *link_new);
 	
 /*! \brief
  */
-void list_insert_link(list_t list, link_t *link_prev, link_t *link_new);
+void list_insert_link(list_t *list, link_t *link_prev, link_t *link_new);
 	
 /*! \brief
  */
-link_t list_remove_link(list_t list, link_t *link_old);
+link_t list_remove_link(list_t *list, link_t *link_old);
 
 /*! \def list_new
  *  \brief Creates a new list.
