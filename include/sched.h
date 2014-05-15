@@ -46,7 +46,7 @@ void sched_init(void);
 
 /*! \brief
  */
-int newthread(void(*task)(void), u32_t priority);
+int newthread(void(*task)(void), u32_t priority, u32_t period, u32_t budget);
 
 /*! \brief
  */

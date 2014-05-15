@@ -36,7 +36,7 @@ void threads_init(void) {
 
 /*! \brief Creates a new thread
  */
-int newthread(void(*task)(void), u32_t priority, u32_t period)
+int newthread(void(*task)(void), u32_t priority, u32_t period, u32_t budget)
 {
 	int i;
 	int ret;
@@ -52,7 +52,7 @@ int newthread(void(*task)(void), u32_t priority, u32_t period)
 		return -1;
 
 //  Search for 1st available thread control block
-	for(i = 0; (i < MAX_NUM_THREADS) && (thread_blocks[i].id != 0); i++);
+	for(i = 0; (i < MAX_NUM_THREADS) && (thread_blocks[i].id != 0); ++i);
 
 // Return 0 if no thread control block is available
 	if (MAX_NUM_THREADS == i)
@@ -61,10 +61,12 @@ int newthread(void(*task)(void), u32_t priority, u32_t period)
 	thread_new = &(thread_blocks[i]);
 
 	thread_new->stack_ptr		= thread_new->stack_bottom;
-	thread_new->id			= nextid++;
+	thread_new->id			= ++nextid;
 	thread_new->priority		= priority; //Based on period in RM
-	thread_new->period_timer_reload	= period;
-	thread_new->period_timer	= period;
+	thread_new->period_reload	= period;
+	thread_new->period		= period;
+	thread_new->budget_reload	= budget;
+	thread_new->budget		= budget;
 	thread_new->run_count		= 0;
 	thread_new->sleep_count		= 0;
 	thread_new->sleep_total		= 0;
@@ -175,7 +177,7 @@ void __attribute__((optimize(0))) nextthread(void)
 		}
 	}
 
-	thread_current->run_count++;
+	++(thread_current->run_count);
 
 	budget_consume(thread_current);
 }
