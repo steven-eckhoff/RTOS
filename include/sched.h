@@ -26,11 +26,13 @@ typedef struct {
 	u32_t stack_size;
 	u32_t id;
 	u32_t priority;
-	u32_t period_timer_reload;
-	u32_t period_timer;
-	u32_t run_count;
-	u32_t sleep_count;
-	u32_t sleep_total;
+	u32_t period_reload;
+	u32_t period;
+	u32_t budget_reload;
+	u32_t budget;
+	atomic_t run_count;
+	atomic_t sleep_count;
+	atomic_t sleep_total;
 	lock_t *spinning_on;
 	sema4_t *blocked_on;
 	link_t thread_list;
