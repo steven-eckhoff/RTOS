@@ -14,33 +14,16 @@
  */
 typedef struct {
 	atomic_t atomic;
-	atomic_t *preempt_disable;
-	atomic_t *schedule_now;
 	thread_t *owner;
 } lock_t;
 
 /*! \def lock_new
  */
-#define lock_new(name) lock_t name = {
-				atomic_init(0),
-				NULL,
-				NULL,
-				NULL }	
-/*! \def lock_new_nopreempt
- */
-#define lock_new_nopreempt(name) lock_t name = {
-				atomic_init(0),
-				&preempt_disable,
-				&schedule_now,
-				NULL }
+#define lock_new(name) lock_t name = {atomic_init(0), NULL}	
 
 /*! \def lock_init
  */
-#define lock_init() {atomic_init(0), NULL, NULL, NULL}
-
-/*! \def lock_init_nopreempt
- */
-#define lock_init_nopreempt() {atomic_init(0), &preempt_disable, &schedule_now, NULL}
+#define lock_init() {atomic_init(0), NULL}
 	
 /*! \brief Unlocks a kernel lock object
  */

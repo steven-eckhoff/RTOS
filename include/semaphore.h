@@ -18,7 +18,7 @@
 typedef struct {
 	atomic_t value;
 	thread_t *owner;
-	queue_t queue;
+	list_t queue;
 } semaphore_t;
 
 /*! \brief
@@ -38,6 +38,6 @@ void semaphore_up(semaphore_t *s);
  */
 #define semaphore_new(name, value) semaphore_t name = { atomic_init(value),
 							NULL,
-							queue_init_nopreempt }
+							list_init_nopreempt(SINGLE, NULL, NULL) }
 
 #endif // KERNEL_SEMAPHORE_H

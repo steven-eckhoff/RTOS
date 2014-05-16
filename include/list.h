@@ -86,21 +86,10 @@ link_t list_remove_link(list_t *list, link_t *link_old);
  */
 #define list_new(name,type,head,tail) list_t name = {type, head, tail, lock_init()}
 
-/*! \def list_new_nopreempt
- *  \brief Creates a new list.
- */
-#define list_new_nopreempt(name,type,head,tail) list_t name = {type, head, tail, 
-								lock_init_nopreempt()}
-
 /*! \def list_init
  *  \brief initializes members of an embedded list
  */
 #define list_init(type, head, tail) {type, head, tail, lock_init()}
-
-/*! \def list_init_nopreempt
- *  \brief initializes members of an embedded list
- */
-#define list_init_nopreempt(type, head, tail) {type, head, tail, lock_init_nopreempt()}
 
 /*! \def offset_of
  *  \brief calculates the offset of a given member in a given object
