@@ -1,10 +1,22 @@
+/*! \file semaphore.c
+ *  \bried This is the kernel API for semaphores
+ */
 #include "include/atomic.h"
 #include "include/list.h"
 #include "include/sched.h"
 #include "include/semaphore.h"
 
+// Defined in arch/arm/cortexM3/sched_asm.S 
 extern void reschedule(void);
 
+/*! \brief Use to aquire the semaphore or be blocked and be placed 
+ *   on a queue. 
+ *  \note Do not attempt to acquire a semaphore if you currently
+ *        hold a lock. Use semaphores when the assciated overhead
+ *        is much less than the time used to use the resource that
+ *        the semaphore is protecting. Also do not use semaphores
+ *        in interrupt context.
+ */
 void semaphore_down(sema4_t *s)
 {
 	// Preemption disabled because the scheduler runs in interrupt
@@ -28,6 +40,8 @@ void semaphore_down(sema4_t *s)
 	atomic_dec(&preempt_disable);
 }
 
+/*! \brief Use this to make the semaphore available for other threads
+ */
 void semaphore_up(sema4_t *s)
 {
 	link_t *list_ptr;
