@@ -10,6 +10,8 @@
 // Defined in arch/arm/cortexM3/sched_asm.S
 extern void runfirstthread(void); //kernel_asm.S
 
+volatile u32_t idle_counter; // Telling compiler hands off
+
 /*! \brief This is the idle thread
  *  \note This is the lowest priority thread it keeps the kernel
           from running of the rails. It may be useful to measure 
@@ -17,9 +19,9 @@ extern void runfirstthread(void); //kernel_asm.S
  */
 void idlethread(void) 
 {
-	volatile u32_t tmp; //Telling compiler hands off. 
+	idle_counter = 0;
 	for(;;) {
-		tmp++;
+		++idle_counter;
 	}
 }
 
@@ -30,7 +32,9 @@ void kernel_init(void)
 	board_init(); //FIXME: This may make more sense somewhere else
 	systimeinit();
 	sched_init();
-	newthread(&idlethread, PRIORITY_LEVELS - 1);
+	// The period of the idle thread will alwasy be up and the budget depleted
+	// This should be improved.
+	newthread(&idlethread, PRIORITY_LEVELS - 1, 0, 1);
 }
 
 /*! \brief This launches the kernel
