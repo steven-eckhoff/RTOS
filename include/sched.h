@@ -20,6 +20,10 @@ extern atomic_t schedule_now; //FIXME: Convert to IPC
 extern thread_t *thread_current;
 extern list_t kernel_threads;
 
+// Defined in arch/arm/cortexM3/sched_asm.S
+extern void schedule(void);
+extern void reschedule(void);
+
 /*! \typedef
  */
 typedef struct {
@@ -47,17 +51,14 @@ typedef struct {
  */
 void sched_init(void);
 
+/*! \brief Call to get the first thread to run
+ *  \return Returns the highest priority thread from the kernel thread list
+ */
+thread_t *firstthread(void);
+
 /*! \brief
  */
 int newthread(void(*task)(void), u32_t priority, u32_t period, u32_t budget);
-
-/*! \brief
- */
-void schedule(void);
-
-/*! \brief
- */
-void reschedule(void);
 
 /*! \brief
  */
