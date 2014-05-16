@@ -14,6 +14,7 @@
 #define PRIORITY_LEVELS	MAX_NUM_THREADS
 #define MAX_PRIORITY (PRIORITY_LEVELS - 1)
 
+//FIXME: Pull all of these out and extern them in each *.c that needs them
 extern atomic_t preempt_disable; //FIXME: Convert to IPC
 extern atomic_t schedule_now; //FIXME: Convert to IPC
 extern thread_t *thread_current;

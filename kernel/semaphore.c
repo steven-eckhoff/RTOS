@@ -9,6 +9,8 @@
 // Defined in arch/arm/cortexM3/sched_asm.S 
 extern void reschedule(void);
 
+//extern thread_t *thread_current; FIXME: Add this and pull it out of sched.h
+
 /*! \brief Use to aquire the semaphore or be blocked and be placed 
  *   on a queue. 
  *  \note Do not attempt to acquire a semaphore if you currently
