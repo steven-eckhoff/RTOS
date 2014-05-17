@@ -2,7 +2,6 @@
 #define KERNEL_ATOMIC_H
 
 #include "include/types.h"
-#include "asm/atomic.h"
 
 /*! \typedef atomic_t
  *  \brief This is an atomic type object
@@ -10,6 +9,8 @@
 typedef struct {
 	s32_t value;
 } atomic_t;
+
+#include "asm/atomic.h"
 
 /*! \brief Reads value of atomic type
  */

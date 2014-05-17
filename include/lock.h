@@ -6,8 +6,8 @@
 
 #include "include/types.h"
 #include "include/atomic.h"
-#include "asm/lock.h"
-#include "include/sched.h"
+
+typedef struct thread_obj thread_t;
 
 /*! \typedef lock_t
  *  \brief This is a lock object
@@ -16,6 +16,8 @@ typedef struct {
 	atomic_t atomic;
 	thread_t *owner;
 } lock_t;
+
+#include "asm/lock.h"
 
 /*! \def lock_new
  */

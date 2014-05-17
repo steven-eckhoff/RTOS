@@ -4,8 +4,6 @@
 #ifndef LOCK_H
 #define LOCK_H
 
-#include "include/lock.h"
-
 /*! \brief Spin lock routine for kernel lock object
  */
 void spinlock(lock_t *l)

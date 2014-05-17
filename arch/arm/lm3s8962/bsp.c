@@ -6,10 +6,7 @@
 #include "rit128x96x4.h"
 #include "gpio.h"
 #include "pwm.h"
-#include "include/types.h"
 #include "bsp.h"
-#include "include/sched.h"
-#include "include/wait.h"
 
 void heartbeat_init(void)
 {
@@ -21,7 +18,7 @@ void heartbeat(void)
 {
 	for(;;) {
 		led_toggle();
-		sleep(250); // FIXME: Add a calculation based on the timeslice
+//		sleep(250); // FIXME: Add a calculation based on the timeslice
 	}
 }
 
@@ -42,7 +39,7 @@ void string_draw(const char *s, unsigned long x, unsigned long y, unsigned char 
 	RIT128x96x4StringDraw(s, x, y, level);
 }
 
-void pwm_init(u32_t pwm)
+void pwm_init(unsigned long pwm)
 {
 	unsigned long period = SysCtlClockGet() / 333; //333Hz (Assume PWM clock == sysclock)
 	unsigned long duty = (period * 50) / 100;
@@ -52,7 +49,7 @@ void pwm_init(u32_t pwm)
 		SysCtlPeripheralEnable(SYSCTL_PERIPH_PWM0);
 		SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOF);
 		
-		delay(5);
+//		delay(5);
 
 		GPIOPinTypePWM(GPIO_PORTF_BASE, GPIO_PIN_0);
 
@@ -158,9 +155,9 @@ void PanTilt_Init(void){
 	}
 }
 
-void pwm_set_duty(u32_t pwm, u32_t duty)
+void pwm_set_duty(unsigned long pwm, unsigned long duty)
 {
-	u32_t period;
+	unsigned long period;
 	
 	if (pwm == 0) {
 		period = PWMGenPeriodGet(PWM_BASE, PWM_GEN_0);

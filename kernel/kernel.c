@@ -1,9 +1,9 @@
 /*! \file kernel.c
  *  \brief Routines for starting kernel and other stuff
  */
+#include "bsp.h"
 #include "include/kernel.h"
 #include "board.h"
-#include "bsp.h"
 #include "include/sched.h"
 #include "include/time.h"
 

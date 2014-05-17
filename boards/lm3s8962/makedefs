@@ -97,6 +97,19 @@ CFLAGS=	-mthumb			\
 	-c			\
 	-D TIMESLICE=100000
 
+
+# CFLAGS=-mthumb             \
+#       -mcpu=cortex-m3     \
+#       -funit-at-a-time	   \
+#       -O0		   \
+#       -MD                 \
+#       -std=c99            \
+#       -Wall               \
+#       -pedantic           \
+#       -DPART_${PART}      \
+#       -c                  \
+#       -D TIMESLICE=100000
+
 #
 # The command for calling the library archiver.
 #

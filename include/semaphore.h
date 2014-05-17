@@ -10,7 +10,6 @@
 #include "include/types.h"
 #include "include/lock.h"
 #include "include/list.h"
-#include "include/shced.h"
 
 /*! \typedef semaphore
  *  \brief Provides a semaphore

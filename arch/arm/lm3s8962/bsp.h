@@ -4,7 +4,6 @@
 // FIXME: Maybe not the best. Rethinik this. 
 #include "interrupt.h"
 #include "lm3s8962.h"
-#include "include/types.h"
 
 #define disableints() IntMasterDisable()
 #define enableints() IntMasterEnable()
@@ -19,7 +18,8 @@ void display_init(void);
 
 void string_draw(const char *s, unsigned long x, unsigned long y, unsigned char level);
 
-void pwm_init(u32_t pwm);
+void pwm_init(unsigned long pwm);
 
-void pwm_set_duty(u32_t pwm, u32_t duty);
+void pwm_set_duty(unsigned long pwm, unsigned long duty);
+
 #endif // BSP_H

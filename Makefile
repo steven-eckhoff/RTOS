@@ -25,6 +25,13 @@ dirs = 	$(SRCARCH)	\
 export ROOT ARCH PROC BOARD SRCARCH SRCPROC SRCBOARD
 
 all:
+	@echo "\n******* Building for $(BOARD) *******"
+	@echo "SRCARCH = $(SRCARCH)"
+	@echo "SRCPROC = $(SRCPROC)"
+	@echo "SRCBOARD = $(SRCBOARD)"
+	@echo "ARCH = $(ARCH)"
+	@echo "PROC = $(PROC)"
+	@echo "*******\n"
 	@for i in $(dirs);				\
 	do						\
 		if [ -f $${i}/Makefile ];		\
