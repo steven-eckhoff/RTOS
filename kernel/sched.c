@@ -42,8 +42,8 @@ int newthread(void(*task)(void), u32_t priority, u32_t period, u32_t budget)
 	int ret;
 	thread_t *thread_new;
 	thread_t *thread_ptr;
-	thread_t *thread_last_ptr;
 	link_t *list_ptr;
+	link_t *list_last_ptr;
 	link_t *list_tail_ptr;
 
 	ret = disableints();
@@ -87,12 +87,12 @@ int newthread(void(*task)(void), u32_t priority, u32_t period, u32_t budget)
 		// Priority 0 is the most important
 		while ((list_ptr != list_tail_ptr) 
 				&& (thread_new->priority > thread_ptr->priority)) {
-			thread_last_ptr = thread_ptr;
+			list_last_ptr = list_ptr;
 			list_ptr = list_ptr->next;
 			thread_ptr = member_of(list_ptr, thread_t, thread_list);
 		}
 
-		list_insert_link(&kernel_threads, thread_last_ptr, thread_ptr);
+		list_insert_link(&kernel_threads, list_last_ptr, list_ptr);
 	} else {
 		list_add_head(&kernel_threads, thread_new);
 	}
