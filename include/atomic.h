@@ -13,8 +13,13 @@ typedef struct {
 #include "asm/atomic.h"
 
 /*! \brief Reads value of atomic type
+ *  \note Only accurate if preemption is disabled. This is just to keep the 
+ *        interface with atomics consistent. This does not guarantee atomicity.
  */
-s32_t atomic_read(atomic_t *);
+s32_t static inline atomic_read(atomic_t *a)
+{
+	return a->value;
+}
 
 /*! \def Creates a new atomic object
  */

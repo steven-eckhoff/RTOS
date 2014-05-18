@@ -3,6 +3,7 @@
  */
 
 #include "include/lock.h"
+#include "asm/lock.h"
 
 /*! \brief Make lock available for other threads
  */

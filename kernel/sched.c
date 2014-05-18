@@ -13,8 +13,8 @@ thread_t *thread_current;
 u32_t nextid;
 u32_t numthreads;
 u32_t timeslice;
-s32_t preemptcount;
-s32_t preemptasap;
+atomic_t preempt_disable;
+atomic_t schedule_now;
 
 /*! \brief initializes the kernel threads. Later this will change for dynamic allocation
  */

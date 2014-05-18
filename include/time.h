@@ -3,10 +3,17 @@
 
 #include "include/types.h"
 
-#define systimeinc() systemtime++
-#define systimeget() systemtime
-
 extern u32_t systemtime;
+
+void static inline systimeinc(void)
+{
+	++systemtime;
+}
+
+void static inline systimeget(void) 
+{
+	return systemtime;
+}
 
 void systimeinit(void);
 

@@ -10,7 +10,7 @@
  */
 bool static inline atomic_inc(atomic_t *a)
 {
-	s32_t res;
+	s32_t res = 0;
 
 	__asm__ __volatile__ (
 "1:	ldrex %0, %1\n"
@@ -29,7 +29,7 @@ bool static inline atomic_inc(atomic_t *a)
  */
 bool static inline atomic_dec(atomic_t *a)
 {
-	s32_t res;
+	s32_t res = 0;
 
 	__asm__ __volatile__ (
 "1:	ldrex %0, %1\n"

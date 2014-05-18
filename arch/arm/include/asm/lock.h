@@ -6,7 +6,7 @@
 
 /*! \brief Spin lock routine for kernel lock object
  */
-void spinlock(lock_t *l)
+void spin_lock(lock_t *l)
 {
 	atomic_t *a = &l->atomic;
 	
