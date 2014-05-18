@@ -19,11 +19,12 @@ typedef struct {
 
 /*! \def lock_new
  */
-#define lock_new(name) lock_t name = {atomic_init(0), NULL}	
+#define lock_new(name) lock_t name = {atomic_init(0), NULL}
 
 /*! \def lock_init
  */
 #define lock_init() {atomic_init(0), NULL}
+
 /*! \brief Tries to aquire a lock or spin on it
  */	
 void spin_lock(lock_t *l);

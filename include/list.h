@@ -20,21 +20,18 @@ typedef struct link_t_ {
 	struct link_t_ *prev;
 } link_t;
 
-/*! \enum list_link_type_
- *  \brief Specifies the link type of the list
- */
-typedef enum {SINGLE, DOUBLE} link_num_t;
-
 /*!
  * \typedef list
  * \brief linked list data structure
  * \details Currently all list and derived data structures will have a lock
  */
 typedef struct {
-	link_num_t type;
 	link_t *head;
 	link_t *tail;
 	lock_t lock;
+	const bool double_link;
+	const bool circular;
+	const bool use_lock;
 } list_t;
 
 /*! \def link_init
@@ -51,7 +48,7 @@ void list_destroy(list_t *list);
 
 /*! \brief
  */
-void list_head_set(list_t *list, link_t *head_new);
+s32_t list_head_set(list_t *list, link_t *head_new);
 
 /*! \brief
  */
@@ -87,13 +84,20 @@ link_t list_remove_link(list_t *list, link_t *link_old);
 
 /*! \def list_new
  *  \brief Creates a new list.
+ *  \note Accessing a locked list and then trying to acquire a semaphore is not allowed.
+ *        If access to the list is long in duration protecting it with a semaphore is
+ *        more appropriate. To protect the list with a semaphore use an unlocked list.
  */
-#define list_new(name,type,head,tail) list_t name = {type, head, tail, lock_init()}
+#define list_new(name, head, tail, double_link, circular, locked)		\
+			 list_t name = {type, head, tail, lock_init(), 		\
+						double_link, circular, locked}
 
 /*! \def list_init
  *  \brief initializes members of an embedded list
  */
-#define list_init(type, head, tail) {type, head, tail, lock_init()}
+#define list_init(head, tail, double_link, circular, locked)			\
+			 {head, tail, lock_init_(), 				\
+				double_link, circular, locked}
 
 /*! \def offset_of
  *  \brief calculates the offset of a given member in a given object
