@@ -8,15 +8,16 @@
 #define KERNEL_SEMAPHORE_H
 
 #include "include/types.h"
-#include "include/lock.h"
 #include "include/list.h"
+
+typedef struct thread thread_s_t;
 
 /*! \typedef semaphore
  *  \brief Provides a semaphore
  */
 typedef struct {
 	atomic_t value;
-	thread_t *owner;
+	thread_s_t *owner;
 	list_t queue;
 } semaphore_t;
 
@@ -35,8 +36,7 @@ void semaphore_up(semaphore_t *s);
 /*! \def semaphore_new
  *  \brief Creates a new semaphore
  */
-#define semaphore_new(name, value) semaphore_t name = { atomic_init(value),
-							NULL,
-							list_init_nopreempt(SINGLE, NULL, NULL) }
-
+#define semaphore_new(name, value) semaphore_t name = { atomic_init(value),				\
+							NULL,						\
+							list_init(SINGLE, NULL, NULL) }
 #endif // KERNEL_SEMAPHORE_H

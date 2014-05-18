@@ -7,6 +7,8 @@
 #include "gpio.h"
 #include "pwm.h"
 #include "bsp.h"
+#include "interrupt.h"
+#include "lm3s8962.h"
 
 void heartbeat_init(void)
 {

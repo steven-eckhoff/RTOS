@@ -37,9 +37,13 @@ typedef struct {
 	lock_t lock;
 } list_t;
 
-/*! \brief Initializes a link object
+/*! \def link_init
  */
-void inline link_init(link_t *link);
+#define link_init(x) 				\
+		do {				\
+			(x)->next = NULL;	\
+			(x)->prev = NULL;	\
+		} while(0)	
 
 /*! \brief
  */
@@ -94,13 +98,18 @@ link_t list_remove_link(list_t *list, link_t *link_old);
 /*! \def offset_of
  *  \brief calculates the offset of a given member in a given object
  */
-#define offset_of(type, member) (unsigned int)&(((type*)0)->member)
+#define offset_of(type, member) ((unsigned int) &(((type*)0)->member))
 
 /*! \def member_of
  *  \brief returns the address of the object containing the specified member
  */
-#define member_of(ptr, type, member) ({    				\
-            const typeof((((type*)0)->member)) *__mptr = (ptr);    	\
-            (type *)((char *)(__mptr) - offset_of(type, member)); })
+/*#define member_of(ptr, type, member)    					\
+		do {								\
+            		const typeof((((type*)0)->member)) *__mptr = (ptr);    	\
+            		(type *)((char *)(__mptr) - offset_of(type, member));	\
+		} while(0)
+*/
+#define member_of(ptr, type, member) ((type *)((char *)ptr - offset_of(type, member)))
+
 
 #endif // KERNEL_LIST_H

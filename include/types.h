@@ -1,8 +1,13 @@
-#ifndef TYPES_H
-#define TYPES_H
+#ifndef KERNEL_TYPES_H
+#define KERNEL_TYPES_H
 
-#define NULL ((void *)0)
+
 typedef long s32_t;
+
 typedef unsigned long u32_t;
 
-#endif // TYPES_H
+typedef enum {false, true} bool;
+
+#define NULL ((void *)0)
+
+#endif // KERNEL_TYPES_H

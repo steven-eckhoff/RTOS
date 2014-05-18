@@ -1,9 +1,8 @@
 #ifndef BSP_H
 #define BSP_H
 
-// FIXME: Maybe not the best. Rethinik this. 
-#include "interrupt.h"
 #include "lm3s8962.h"
+#include "interrupt.h"
 
 #define disableints() IntMasterDisable()
 #define enableints() IntMasterEnable()

@@ -4,7 +4,7 @@
 #include "include/sched.h"
 #include "bsp.h"
 #include "include/kernel.h"
-#include "include/aperiodic.h"
+//#include "include/aperiodic.h"
 
 #define digi2char(x) ('0' + x)
 
@@ -58,9 +58,9 @@ void thread_debug(const char *name, unsigned long id, unsigned long value)
 	for(i = 0; name[i] != '\0'; i++)
 		buf[i] = name[i];
 	itoa10(value, &(buf[i]), 25);
-	sema4down(&sema4_display);
+	semaphore_down(&sema4_display);
 	string_draw(buf, 0, (id - 1) * 11, 11);
-	sema4up(&sema4_display);
+	semaphore_up(&sema4_display);
 }
 
 void thread1(void){

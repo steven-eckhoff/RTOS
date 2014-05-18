@@ -30,8 +30,6 @@ void threads_init(void) {
 		thread_blocks[i].stack_bottom = &(thread_blocks[i].stack[STACK_SIZE - 1]);
 		thread_blocks[i].stack_size     = (u32_t)STACK_SIZE;
 	}
-	
-	kthreads = NULL; //FIXME: This should go somewhere else
 }
 
 /*! \brief Creates a new thread
@@ -48,7 +46,7 @@ int newthread(void(*task)(void), u32_t priority, u32_t period, u32_t budget)
 
 	ret = disableints();
 
-	if (priorityority < 0)
+	if (priority < 0)
 		return -1;
 
 //  Search for 1st available thread control block
@@ -68,8 +66,8 @@ int newthread(void(*task)(void), u32_t priority, u32_t period, u32_t budget)
 	thread_new->budget_reload	= budget;
 	thread_new->budget		= budget;
 	thread_new->run_count		= 0;
-	thread_new->sleep_count		= 0;
-	thread_new->sleep_total		= 0;
+	atomic_write(&thread_new->sleep_count,0);
+	atomic_write(&thread_new->sleep_total,0);
 	thread_new->spinning_on		= NULL;
 	thread_new->blocked_on		= NULL;
 	link_init(&thread_new->thread_list);
@@ -94,7 +92,7 @@ int newthread(void(*task)(void), u32_t priority, u32_t period, u32_t budget)
 
 		list_insert_link(&kernel_threads, list_last_ptr, list_ptr);
 	} else {
-		list_add_head(&kernel_threads, thread_new);
+		list_add_head(&kernel_threads, &thread_new->thread_list);
 	}
 
 	thread_new->stack_ptr = stack_init(thread_new->stack_ptr, task);
@@ -113,9 +111,13 @@ int newthread(void(*task)(void), u32_t priority, u32_t period, u32_t budget)
 
 #define budget_reset(x) ((x)->budget = (x)->budget_reload)
 
-#define budget_consume(x) ({			\
-		if (0 != (x)->budget)		\
-			--((x)->budget); })
+#define budget_consume(x)					\
+		do {						\
+			if (0 != (x)->budget)			\
+				--((x)->budget);		\
+		} while(0)
+
+#define sleeping(x) (0 != atomic_read(&(x)->sleep_count))
 
 #define ready2run(x) ( (period_expired(x) || !budget_depleted(x))	\
 			&& !sleeping(x) )
@@ -124,15 +126,16 @@ int newthread(void(*task)(void), u32_t priority, u32_t period, u32_t budget)
 
 #define spinning(x) (NULL != (x)->spinning_on)
 
-#define sleeping(x) (0 != (x)->sleep_count)
 
 #define get_sema4_owner(x) ((x)->blocked_on->owner)
 
 #define get_lock_owner(x) ((x)->spinning_on->owner)
 
-#define thread_next(lp, tp) ( {						\
-		(lp) = (lp)->next;					\
-		(tp) = member_of((lp), thread_t, thread_list); })
+#define thread_next(lp, tp)							\
+		do {								\
+			(lp) = (lp)->next;					\
+			(tp) = member_of((lp), thread_t, thread_list);		\
+		} while(0)
 
 /*! \def lock_test_nopreempt
  *  \brief Test a lock if you know you wont be preempted not MP safe
@@ -144,7 +147,6 @@ void __attribute__((optimize(0))) nextthread(void)
 	static thread_t *thread_ptr; //FIXME: Something not stack friendly
 	static link_t *list_ptr;
 	static link_t *list_tail_ptr;
-	static u32_t highpriority;
 
 	// Higher priority threads appear first in the list
 

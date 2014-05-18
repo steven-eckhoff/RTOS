@@ -7,14 +7,14 @@
 #include "include/types.h"
 #include "include/atomic.h"
 
-typedef struct thread_obj thread_t;
+typedef struct thread thread_l_t;
 
 /*! \typedef lock_t
  *  \brief This is a lock object
  */
 typedef struct {
 	atomic_t atomic;
-	thread_t *owner;
+	thread_l_t *owner;
 } lock_t;
 
 #include "asm/lock.h"

@@ -22,7 +22,7 @@ bool static inline atomic_inc(atomic_t *a)
 	: "m" (a->value)
 	);
 
-	return (res >= 0 ? TRUE : FALSE);
+	return (res >= 0 ? true : false);
 }
 
 /*! \brief Decrements the value of an atomic type
@@ -41,7 +41,7 @@ bool static inline atomic_dec(atomic_t *a)
 	: "m" (a->value)
 	);
 
-	return (res < 0 ? TRUE : FALSE);
+	return (res < 0 ? true : false);
 }
 
 /*! \brief Writes value to atomic type

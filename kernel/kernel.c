@@ -1,11 +1,15 @@
 /*! \file kernel.c
  *  \brief Routines for starting kernel and other stuff
  */
+#include "include/types.h"
 #include "bsp.h"
 #include "include/kernel.h"
 #include "board.h"
 #include "include/sched.h"
 #include "include/time.h"
+
+//Defined in sched.c
+extern u32_t timeslice;
 
 // Defined in arch/arm/cortexM3/sched_asm.S
 extern void runfirstthread(void); //kernel_asm.S
