@@ -7,7 +7,7 @@
 #include "include/list.h"
 #include "include/lock.h"
 
-link_t* static inline circular_double_list_remove(list_t *list, link_t *member)
+link_t* static inline list_remove_circular_double(list_t *list, link_t *member)
 {	
 	if (0 == list->member_count)
 		return NULL;
@@ -33,7 +33,7 @@ link_t* static inline circular_double_list_remove(list_t *list, link_t *member)
 	return member;
 }
 
-link_t* static inline linear_double_list_remove(list_t *list, link_t *member)
+link_t* static inline list_remove_linear_double(list_t *list, link_t *member)
 {	
 	if (0 == list->member_count)
 		return NULL;
