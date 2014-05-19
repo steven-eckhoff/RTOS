@@ -32,6 +32,7 @@ typedef struct {
 	const bool double_link;
 	const bool circular;
 	const bool use_lock;
+	u32_t member_count;
 } list_t;
 
 /*! \def link_init
@@ -82,6 +83,18 @@ void list_insert_link(list_t *list, link_t *link_prev, link_t *link_new);
  */
 link_t list_remove_link(list_t *list, link_t *link_old);
 
+void static inline if_list_lock_spin_lock(list_t *list)
+{
+	if (true == list->use_lock)
+		spin_lock(&list->lock);
+}
+
+void static inline if_list_lock_spin_unlock(list_t *list)
+{
+	if (true == list->use_lock)
+		spin_unlock(&list->lock);
+}
+
 /*! \def list_new
  *  \brief Creates a new list.
  *  \note Accessing a locked list and then trying to acquire a semaphore is not allowed.
@@ -90,14 +103,14 @@ link_t list_remove_link(list_t *list, link_t *link_old);
  */
 #define list_new(name, head, tail, double_link, circular, locked)		\
 			 list_t name = {type, head, tail, lock_init(), 		\
-						double_link, circular, locked}
+						double_link, circular, locked, 0}
 
 /*! \def list_init
  *  \brief initializes members of an embedded list
  */
 #define list_init(head, tail, double_link, circular, locked)			\
 			 {head, tail, lock_init_(), 				\
-				double_link, circular, locked}
+				double_link, circular, locked, 0}
 
 /*! \def offset_of
  *  \brief calculates the offset of a given member in a given object

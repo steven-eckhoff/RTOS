@@ -7,6 +7,62 @@
 #include "include/list.h"
 #include "include/lock.h"
 
+link_t* static inline circular_double_list_remove(list_t *list, link_t *member)
+{	
+	if (0 == list->member_count)
+		return NULL;
+
+	--list->member_count;
+
+	if (list->member_count > 0) {
+		member->prev->next = member->next;
+		member->next->prev = member->prev;
+
+		if (member == list->head)
+			list->head = member->next;
+		else if (member == list->tail)
+			list->tail = member->prev;
+	} else {
+		list->head = NULL;
+		list->tail = NULL;
+	}
+
+	member->next = NULL;
+	member->prev = NULL;
+
+	return member;
+}
+
+link_t* static inline linear_double_list_remove(list_t *list, link_t *member)
+{	
+	if (0 == list->member_count)
+		return NULL;
+
+	--list->member_count;
+
+	if (list->member_count > 0) {
+
+		if (member == list->head) {
+			list->head = member->next;
+			list->head->prev = NULL;
+		} else if (member == list->tail) {
+			list->tail = member->prev;
+			list->tail->next = NULL;
+		} else {
+			member->next->prev = member->prev;
+			member->prev->next = member->next;
+		}
+	} else {
+		list->head = NULL;
+		list->tail = NULL;
+	}
+
+	member->next = NULL;
+	member->prev = NULL;
+
+	return member;
+}
+
 /*! \brief
  */
 void list_destroy(list_t *list)
@@ -18,68 +74,62 @@ void list_destroy(list_t *list)
  */
 s32_t list_head_set(list_t *list, link_t *head_new)
 {
-	s32_t ret = -1;	
+}
 
-	if (true == list->use_lock)
-		spin_lock(&list->lock);
-
-	if (NULL == list->head) { // Empty list
-		list->head = head_new;
-		list->tail = head_new; 
-
-		if (true == list->circular) {
-			list->head->next = list->head;
-			list->tail->next = list->head;
-						
-			if (true == list->double_link) {
-				list->head->prev = list->tail;
-				list->tail->prev = list->head;
-			}
-		} else {
-			list->head->next = NULL;
-			list->tail->next = NULL;
-			
-			list->head->prev = NULL;
-			list->tail->prev = NULL;
-		}
-		
-		ret = 0;
-	}
-
-	if (true == list->use_lock)
-		spin_unlock(&list->lock);
+/*! \brief
+ *  \note Lock is not acquired with this call.
+ */
+link_t *list_get_head(list_t *list)
+{
+	if (NULL == list->head)
+		return NULL;
+	else
+		return list->head;
+}
 	
-	return ret;
+/*! \brief
+ *  \note Lock is not acqurired with this call.
+ */
+link_t *list_get_tail(list_t *list)
+{
+	if (NULL == list->tail)
+		return NULL;
+	else
+		return list->tail;
 }
 
 /*! \brief
  */
-link_t *list_get_head(list_t *list);
+link_t *list_remove_head(list_t *list)
+{
+}
 	
 /*! \brief
  */
-link_t *list_get_tail(list_t *list);
+link_t *list_remove_tail(list_t *list)
+{
+}
 
 /*! \brief
  */
-link_t *list_remove_head(list_t *list);
-	
-/*! \brief
- */
-link_t *list_remove_tail(list_t *list);
+void list_add_head(list_t *list, link_t *link_new)
+{
+}
 
 /*! \brief
  */
-void list_add_head(list_t *list, link_t *link_new);
-
-/*! \brief
- */
-void list_add_tail(list_t *list, link_t *link_new);
+void list_add_tail(list_t *list, link_t *link_new)
+{
+}
 	
 /*! \brief
  */
-void list_insert_link(list_t *list, link_t *link_prev, link_t *link_new);
+void list_insert_link(list_t *list, link_t *link_prev, link_t *link_new)
+{
+}
 	
 /*! \brief
  */
-link_t list_remove_link(list_t *list, link_t *link_old);
+link_t list_remove_link(list_t *list, link_t *link_old)
+{
+}
