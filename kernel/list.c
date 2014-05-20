@@ -5,16 +5,13 @@
 */
 
 #include "include/list.h"
-#include "include/lock.h"
 
 link_t* static inline list_remove_circular_double(list_t *list, link_t *member)
 {	
 	if (0 == list->member_count)
 		return NULL;
 
-	--list->member_count;
-
-	if (list->member_count > 0) {
+	if (list->member_count > 1) {
 		member->prev->next = member->next;
 		member->next->prev = member->prev;
 
@@ -30,6 +27,49 @@ link_t* static inline list_remove_circular_double(list_t *list, link_t *member)
 	member->next = NULL;
 	member->prev = NULL;
 
+	--list->member_count;
+
+	return member;
+}
+
+link_t* static inline list_remove_circular_single(list_t *list, link_t *member)
+{
+	link_t *link_ptr;
+
+	if (0 == list->member_count)
+		return NULL;
+	
+	if (list->member_count > 1) {
+		if (member == list->head) {
+			list->tail-next = member->next;
+			list->head = member->next;
+		} else {
+			if ((2 == list->member_count) 
+					&& (list->tail == member)) {
+				list->tail = list->head;
+				list->head->next = list->head;
+			} else { // Assumed less likely
+				link_ptr = list->head;
+				do {
+					link_ptr = link_ptr->next;
+				} while ((link_ptr->next != member) 
+						&& (link_ptr != list->head));
+
+				if (link_ptr == list->head) // Member is not in the list
+					return NULL;
+			
+				link_ptr->next = member->next;
+				
+				if (member == list->tail)
+					list->tail = link_ptr;
+			}
+		}
+	}	
+	
+	member->next = NULL;
+	
+	--list->member_count;
+
 	return member;
 }
 
@@ -38,9 +78,7 @@ link_t* static inline list_remove_linear_double(list_t *list, link_t *member)
 	if (0 == list->member_count)
 		return NULL;
 
-	--list->member_count;
-
-	if (list->member_count > 0) {
+	if (list->member_count > 1) {
 
 		if (member == list->head) {
 			list->head = member->next;
@@ -60,6 +98,48 @@ link_t* static inline list_remove_linear_double(list_t *list, link_t *member)
 	member->next = NULL;
 	member->prev = NULL;
 
+	--list->member_count;
+
+	return member;
+}
+
+link_t* static inline list_remove_linear_single(list_t *list, link_t *member)
+{
+	link_t *link_ptr;
+
+	if (0 == list->member_count)
+		return NULL;
+	
+	if (list->member_count > 1) {
+		if (member == list->head) {
+			list->head = member->next;
+		} else {
+			if ((2 == list->member_count) 
+					&& (list->tail == member)) {
+				list->tail = list->head;
+				list->head->next = NULL;
+			} else { // Assumed less likely
+				link_ptr = list->head;
+				do {
+					link_ptr = link_ptr->next;
+				} while ((link_ptr != NULL) 
+						&& (link_ptr->next != member));
+
+				if (link_ptr == NULL) // Member is not in the list
+					return NULL;
+			
+				link_ptr->next = NULL;
+
+				if (member == list->tail)
+					list->tail = link_ptr;
+			}
+		}
+	}	
+	
+	member->next = NULL;
+	
+	--list->member_count;
+
 	return member;
 }
 
@@ -68,12 +148,6 @@ link_t* static inline list_remove_linear_double(list_t *list, link_t *member)
 void list_destroy(list_t *list)
 {
 	return;
-}
-
-/*! \brief
- */
-s32_t list_head_set(list_t *list, link_t *head_new)
-{
 }
 
 /*! \brief
@@ -100,36 +174,31 @@ link_t *list_get_tail(list_t *list)
 
 /*! \brief
  */
-link_t *list_remove_head(list_t *list)
+link_t *list_remove(list_t *list, link_t *member)
 {
-}
-	
-/*! \brief
- */
-link_t *list_remove_tail(list_t *list)
-{
+	u32_t type = (((u32_t)list->circular) << 1) + (u32_t)(list->double_link);
+
+	switch (type) {
+	case 0:
+		return list_remove_linear_single(list, member);
+		break;
+	case 1:
+		return list_remove_circular_single(list, member);
+		break;
+	case 2:
+		return list_remove_linear_double(list, member);
+		break;
+	case 3:
+		return list_remove_circular_double(list, member);
+		break;
+	}
+	// Should not reach here
+	return NULL;
 }
 
 /*! \brief
  */
-void list_add_head(list_t *list, link_t *link_new)
+void list_add(list_t *list, link_t *link_new)
 {
 }
 
-/*! \brief
- */
-void list_add_tail(list_t *list, link_t *link_new)
-{
-}
-	
-/*! \brief
- */
-void list_insert_link(list_t *list, link_t *link_prev, link_t *link_new)
-{
-}
-	
-/*! \brief
- */
-link_t list_remove_link(list_t *list, link_t *link_old)
-{
-}
