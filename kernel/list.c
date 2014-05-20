@@ -183,10 +183,10 @@ link_t *list_remove(list_t *list, link_t *member)
 		return list_remove_linear_single(list, member);
 		break;
 	case 1:
-		return list_remove_circular_single(list, member);
+		return list_remove_linear_double(list, member);
 		break;
 	case 2:
-		return list_remove_linear_double(list, member);
+		return list_remove_circular_single(list, member);
 		break;
 	case 3:
 		return list_remove_circular_double(list, member);
