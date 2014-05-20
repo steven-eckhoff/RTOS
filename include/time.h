@@ -10,7 +10,7 @@ void static inline systimeinc(void)
 	++systemtime;
 }
 
-void static inline systimeget(void) 
+u32_t static inline systimeget(void) 
 {
 	return systemtime;
 }

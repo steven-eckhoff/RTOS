@@ -4,9 +4,10 @@
 *   \bug No known bugs
 */
 
+#include "include/types.h"
 #include "include/list.h"
 
-link_t* static inline list_remove_linear_single(list_t *list, link_t *member)
+static inline link_t *list_remove_linear_single(list_t *list, link_t *member)
 {
 	link_t *link_ptr;
 
@@ -49,7 +50,7 @@ link_t* static inline list_remove_linear_single(list_t *list, link_t *member)
 	return member;
 }
 
-link_t* static inline list_remove_linear_double(list_t *list, link_t *member)
+static inline link_t *list_remove_linear_double(list_t *list, link_t *member)
 {	
 	if (NULL == list || NULL == member)
 		return NULL;
@@ -82,7 +83,7 @@ link_t* static inline list_remove_linear_double(list_t *list, link_t *member)
 	return member;
 }
 
-link_t* static inline list_remove_circular_single(list_t *list, link_t *member)
+static inline link_t *list_remove_circular_single(list_t *list, link_t *member)
 {
 	link_t *link_ptr;
 
@@ -94,7 +95,7 @@ link_t* static inline list_remove_circular_single(list_t *list, link_t *member)
 	
 	if (list->member_count > 1) {
 		if (member == list->head) {
-			list->tail-next = member->next;
+			list->tail->next = member->next;
 			list->head = member->next;
 		} else {
 			if ((2 == list->member_count) 
@@ -126,7 +127,7 @@ link_t* static inline list_remove_circular_single(list_t *list, link_t *member)
 	return member;
 }
 
-link_t* static inline list_remove_circular_double(list_t *list, link_t *member)
+static inline link_t *list_remove_circular_double(list_t *list, link_t *member)
 {	
 	if (NULL == list || NULL == member)
 		return NULL;
@@ -169,8 +170,8 @@ s32_t static inline list_add_linear_single(list_t *list, link_t *member_next, li
 	} else if (member_next == list->head) { // Insert as head
 		member_new->next = list->head;
 		list->head = member_new;
-	} else if (NULL = member_next) { // Insert as tail
-		member->next = NULL;
+	} else if (NULL == member_next) { // Insert as tail
+		member_new->next = NULL;
 		list->tail->next = member_new;
 		list->tail = member_new;
 	} else {
@@ -180,7 +181,7 @@ s32_t static inline list_add_linear_single(list_t *list, link_t *member_next, li
 			link_ptr = link_ptr->next;
 
 		if (NULL == link_ptr) // member_next not in list
-			return NULL;
+			return -1;
 
 		member_new->next = member_next;
 
@@ -194,8 +195,6 @@ s32_t static inline list_add_linear_single(list_t *list, link_t *member_next, li
 
 s32_t static inline list_add_linear_double(list_t *list, link_t *member_next, link_t *member_new)
 {
-	link_t *link_ptr;
-
 	if (NULL == list || NULL == member_new)
 		return -1;
 	
@@ -209,9 +208,9 @@ s32_t static inline list_add_linear_double(list_t *list, link_t *member_next, li
 		member_new->prev = NULL;
 		list->head->prev = member_new;
 		list->head = member_new;
-	} else if (NULL = member_next) { // Insert as tail
-		member->next = NULL;
-		member->prev = list->tail;
+	} else if (NULL == member_next) { // Insert as tail
+		member_new->next = NULL;
+		member_new->prev = list->tail;
 		list->tail->next = member_new;
 		list->tail = member_new;
 	} else {
@@ -241,8 +240,8 @@ s32_t static inline list_add_circular_single(list_t *list, link_t *member_next, 
 		member_new->next = list->head;
 		list->tail->next = member_new;
 		list->head = member_new;
-	} else if (NULL = member_next) { // Insert as tail
-		member->next = NULL;
+	} else if (NULL == member_next) { // Insert as tail
+		member_new->next = NULL;
 		list->tail->next = member_new;
 		list->tail = member_new;
 	} else {
@@ -252,7 +251,7 @@ s32_t static inline list_add_circular_single(list_t *list, link_t *member_next, 
 			link_ptr = link_ptr->next;
 
 		if (NULL == link_ptr) // member_next not in list
-			return NULL;
+			return -1;
 
 		member_new->next = member_next;
 
@@ -265,8 +264,6 @@ s32_t static inline list_add_circular_single(list_t *list, link_t *member_next, 
 }
 s32_t static inline list_add_circular_double(list_t *list, link_t *member_next, link_t *member_new)
 {
-	link_t *link_ptr;
-
 	if (NULL == list || NULL == member_new)
 		return -1;
 	
@@ -281,9 +278,9 @@ s32_t static inline list_add_circular_double(list_t *list, link_t *member_next, 
 		list->tail->next = member_new;
 		list->head->prev = member_new;
 		list->head = member_new;
-	} else if (NULL = member_next) { // Insert as tail
-		member->next = list->head;
-		member->prev = list->tail;
+	} else if (NULL == member_next) { // Insert as tail
+		member_new->next = list->head;
+		member_new->prev = list->tail;
 		list->tail->next = member_new;
 		list->head->prev = member_new;
 		list->tail = member_new;
@@ -354,7 +351,7 @@ link_t *list_remove(list_t *list, link_t *member)
 
 /*! \brief
  */
-void list_add(list_t *list, link_t *member_next, link_t *member_new)
+s32_t list_add(list_t *list, link_t *member_next, link_t *member_new)
 {
 	u32_t type = (((u32_t)list->circular) << 1) + (u32_t)(list->double_link);
 
@@ -373,6 +370,6 @@ void list_add(list_t *list, link_t *member_next, link_t *member_new)
 		break;
 	}
 	// Should not reach here
-	return NULL;
+	return -1;
 }
 

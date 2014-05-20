@@ -29,7 +29,7 @@ void semaphore_down(semaphore_t *s)
 		
 		thread_current->blocked_on = s;
 
-		list_add_tail(&kernel_threads, &thread_current->thread_list);
+		list_add(&kernel_threads, NULL, &thread_current->thread_list);
 
 		atomic_dec(&preempt_disable); //FIXME: This could me moved out
 	
@@ -55,7 +55,7 @@ void semaphore_up(semaphore_t *s)
 
 	if (NULL != list_get_head(&s->queue)) {
 
-		list_ptr = list_remove_head(&s->queue);
+		list_ptr = list_remove(&s->queue, s->queue.head);
 
 		thread_ptr = member_of(list_ptr, thread_t, block_list);
 		

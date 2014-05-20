@@ -7,7 +7,7 @@
 #include "include/sched.h"
 
 thread_t thread_blocks[MAX_NUM_THREADS];
-list_new(kernel_threads, DOUBLE, NULL, NULL);
+list_new(kernel_threads, HEAD_EMPTY, TAIL_EMPTY, SINGLE_LINK, CIRCULAR, LOCKED);
 thread_t *thread_current;
 
 u32_t nextid;
@@ -41,7 +41,6 @@ int newthread(void(*task)(void), u32_t priority, u32_t period, u32_t budget)
 	thread_t *thread_new;
 	thread_t *thread_ptr;
 	link_t *list_ptr;
-	link_t *list_last_ptr;
 	link_t *list_tail_ptr;
 
 	ret = disableints();
@@ -85,14 +84,13 @@ int newthread(void(*task)(void), u32_t priority, u32_t period, u32_t budget)
 		// Priority 0 is the most important
 		while ((list_ptr != list_tail_ptr) 
 				&& (thread_new->priority > thread_ptr->priority)) {
-			list_last_ptr = list_ptr;
 			list_ptr = list_ptr->next;
 			thread_ptr = member_of(list_ptr, thread_t, thread_list);
 		}
 
-		list_insert_link(&kernel_threads, list_last_ptr, list_ptr);
+		list_add(&kernel_threads, list_ptr, &thread_new->thread_list);
 	} else {
-		list_add_head(&kernel_threads, &thread_new->thread_list);
+		list_add(&kernel_threads, kernel_threads.head, &thread_new->thread_list);
 	}
 
 	thread_new->stack_ptr = stack_init(thread_new->stack_ptr, task);

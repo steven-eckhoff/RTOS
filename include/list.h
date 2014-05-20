@@ -49,39 +49,15 @@ void list_destroy(list_t *list);
 
 /*! \brief
  */
-s32_t list_head_set(list_t *list, link_t *head_new);
-
-/*! \brief
- */
 link_t *list_get_head(list_t *list);
 	
 /*! \brief
  */
 link_t *list_get_tail(list_t *list);
 
-/*! \brief
- */
-link_t *list_remove_head(list_t *list);
-	
-/*! \brief
- */
-link_t *list_remove_tail(list_t *list);
+link_t *list_remove(list_t *list, link_t *member);
 
-/*! \brief
- */
-void list_add_head(list_t *list, link_t *link_new);
-
-/*! \brief
- */
-void list_add_tail(list_t *list, link_t *link_new);
-	
-/*! \brief
- */
-void list_insert_link(list_t *list, link_t *link_prev, link_t *link_new);
-	
-/*! \brief
- */
-link_t list_remove_link(list_t *list, link_t *link_old);
+s32_t list_add(list_t *list, link_t *member_next, link_t *member_new);
 
 void static inline if_list_lock_spin_lock(list_t *list)
 {
@@ -95,6 +71,15 @@ void static inline if_list_lock_spin_unlock(list_t *list)
 		spin_unlock(&list->lock);
 }
 
+#define DOUBLE_LINK true
+#define SINGLE_LINK false
+#define CIRCULAR true
+#define LINEAR true
+#define LOCKED true
+#define UNLOCKED false
+#define HEAD_EMPTY NULL
+#define TAIL_EMPTY NULL
+
 /*! \def list_new
  *  \brief Creates a new list.
  *  \note Accessing a locked list and then trying to acquire a semaphore is not allowed.
@@ -102,14 +87,14 @@ void static inline if_list_lock_spin_unlock(list_t *list)
  *        more appropriate. To protect the list with a semaphore use an unlocked list.
  */
 #define list_new(name, head, tail, double_link, circular, locked)		\
-			 list_t name = {type, head, tail, lock_init(), 		\
+			 list_t name = {head, tail, lock_init(), 		\
 						double_link, circular, locked, 0}
 
 /*! \def list_init
  *  \brief initializes members of an embedded list
  */
 #define list_init(head, tail, double_link, circular, locked)			\
-			 {head, tail, lock_init_(), 				\
+			 {head, tail, lock_init(), 				\
 				double_link, circular, locked, 0}
 
 /*! \def offset_of

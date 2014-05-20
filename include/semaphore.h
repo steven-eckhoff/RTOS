@@ -36,7 +36,12 @@ void semaphore_up(semaphore_t *s);
 /*! \def semaphore_new
  *  \brief Creates a new semaphore
  */
-#define semaphore_new(name, value) semaphore_t name = { atomic_init(value),				\
-							NULL,						\
-							list_init(SINGLE, NULL, NULL) }
+#define semaphore_new(name, value) semaphore_t name = { atomic_init(value),		\
+							NULL,				\
+							list_init(	HEAD_EMPTY, 	\
+									TAIL_EMPTY,	\
+									SINGLE_LINK,	\
+									CIRCULAR,	\
+									UNLOCKED) }
+
 #endif // KERNEL_SEMAPHORE_H

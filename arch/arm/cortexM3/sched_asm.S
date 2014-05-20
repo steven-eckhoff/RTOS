@@ -42,7 +42,7 @@ reschedule:
 
 	.thumb_func
 runfirstthread:
-	ldr	r0,  =currentthreadpt
+	ldr	r0,  =thread_current
 	ldr	r0,  [r0]
 	ldr	r0,  [r0, #8]		// r0 is new process sp; sp = ostcbhighrdy->ostcbstkptr;
 	ldm	r0,  {r4-r11}		// restore r4-11 from new process stack
@@ -61,7 +61,7 @@ osstarthang:
 pendsv_handler:
 	cpsid	i			//prevent interruption during context switch
 
-	ldr     r1, =currentthreadpt	// r1 points to &topstackpt
+	ldr     r1, =thread_current	// r1 points to &topstackpt
         ldr     r1, [r1]		// r1 points to topstackpt
 	adds    r1, r1, #8		// r1 points to stackpt
         
@@ -71,11 +71,11 @@ pendsv_handler:
 
         str     r0, [r1]		// Save new sp into tcb
 	mov	r4, r14			// Save link register to r4
-	ldr     r3, =nextthread		// Update currentthreadpt
+	ldr     r3, =nextthread		// Update thread_current
 	blx     r3			// Call function nextthread()
 	mov     r14, r4			// Restore the link register
 
-        ldr     r0, =currentthreadpt	// r0 holds address of currentthreadpt
+        ldr     r0, =thread_current	// r0 holds address of thread_current
 	ldr     r1, [r0]		// r1 holds address of actual current tcb 
 
         ldr     r0, [r1, #8]		// r0 is new process sp; sp = ostcbhighrdy->ostcbstkptr;
