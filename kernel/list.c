@@ -8,6 +8,9 @@
 
 link_t* static inline list_remove_circular_double(list_t *list, link_t *member)
 {	
+	if (NULL == list || NULL == member)
+		return NULL;
+
 	if (0 == list->member_count)
 		return NULL;
 
@@ -35,6 +38,9 @@ link_t* static inline list_remove_circular_double(list_t *list, link_t *member)
 link_t* static inline list_remove_circular_single(list_t *list, link_t *member)
 {
 	link_t *link_ptr;
+
+	if (NULL == list || NULL == member)
+		return NULL;
 
 	if (0 == list->member_count)
 		return NULL;
@@ -75,6 +81,9 @@ link_t* static inline list_remove_circular_single(list_t *list, link_t *member)
 
 link_t* static inline list_remove_linear_double(list_t *list, link_t *member)
 {	
+	if (NULL == list || NULL == member)
+		return NULL;
+	
 	if (0 == list->member_count)
 		return NULL;
 
@@ -106,6 +115,9 @@ link_t* static inline list_remove_linear_double(list_t *list, link_t *member)
 link_t* static inline list_remove_linear_single(list_t *list, link_t *member)
 {
 	link_t *link_ptr;
+
+	if (NULL == list || NULL == member)
+		return NULL;
 
 	if (0 == list->member_count)
 		return NULL;
@@ -141,6 +153,27 @@ link_t* static inline list_remove_linear_single(list_t *list, link_t *member)
 	--list->member_count;
 
 	return member;
+}
+
+s32_t static inline list_add_linear_single(list_t *list, link_t *member_next, link_t *member_new)
+{
+	if (NULL == list || NULL == member_next || NULL == member_new)
+		return -1;
+	
+	if (0 list->member_count) {
+		list->head = member_new;
+		list->tail = member_new;
+		member_new->next = NULL;
+	} else if (member_next == list->head) {
+		member_new->next = list->head;
+		list->head = member_new;
+	} else if (NULL = member_next) {
+		list->tail->next = member_new;
+		list->tail = member_new;
+		member->next = NULL;
+	} else {
+		
+	}
 }
 
 /*! \brief
