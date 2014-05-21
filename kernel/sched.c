@@ -144,22 +144,16 @@ void __attribute__((optimize(0))) nextthread(void)
 {
 	static thread_t *thread_ptr; //FIXME: Something not stack friendly
 	static link_t *list_ptr;
-	static link_t *list_tail_ptr;
 
 	// Higher priority threads appear first in the list
 
 	list_ptr = list_get_head(&kernel_threads);
-	list_tail_ptr = list_get_tail(&kernel_threads);
-
 	thread_ptr = member_of(list_ptr, thread_t, thread_list);
-
-	while (list_ptr != list_tail_ptr) { //FIXME: Simplify the list iteration
-		if (ready2run(thread_ptr)) {
-			thread_current = thread_ptr;
-			break;
-		}
+	
+	while (!ready2run(thread_ptr)) { // One thread is always ready
 		thread_next(list_ptr, thread_ptr);
 	}
+	thread_current = thread_ptr;
 
 	if (period_expired(thread_current)) {
 		period_reset(thread_current);
