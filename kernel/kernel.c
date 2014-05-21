@@ -36,7 +36,7 @@ void kernel_init(void)
 	board_init(); //FIXME: This may make more sense somewhere else
 	systimeinit();
 	sched_init();
-	// The period of the idle thread will alwasy be up and the budget depleted
+	// The period of the idle thread will always be up and the budget depleted
 	// This should be improved.
 	newthread(&idlethread, PRIORITY_LEVELS - 1, 0, 1);
 }

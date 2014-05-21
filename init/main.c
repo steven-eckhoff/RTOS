@@ -138,7 +138,8 @@ int main(void){
 	heartbeat_init();
 	display_init();
 	kernel_init();           // initialize, disable interrupts
-	newthread(&heartbeat,9, 250, 1);
+//	newthread(&heartbeat,9, 250, 1);
+	newthread(&thread1, 0, 100, 5);
  	kernel_launch(TIMESLICE); // doesn't return, interrupts enabled in here
   	return 0;             // this never executes
 }

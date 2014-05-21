@@ -20,7 +20,7 @@ void heartbeat(void)
 {
 	for(;;) {
 		led_toggle();
-//		sleep(250); // FIXME: Add a calculation based on the timeslice
+		sleep(1); // FIXME: Add a calculation based on the timeslice
 	}
 }
 
