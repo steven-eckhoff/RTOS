@@ -15,6 +15,9 @@ void systick_handler (void) {
 	for(i = 0; i < MAX_NUM_THREADS; ++i) {
 		if (atomic_read(&(thread_blocks[i]).sleep_count) > 0)
 			atomic_dec(&(thread_blocks[i]).sleep_count);
+		
+		if (thread_blocks[i].period > 0)
+			--thread_blocks[i].period;
 	}
 	if (0 == atomic_read(&preempt_disable))
 		schedule();
