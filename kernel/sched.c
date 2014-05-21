@@ -188,7 +188,6 @@ void sched_init(void)
 
 void sleep(u32_t count)
 {
-// CRITICAL SECTION
 	atomic_write(&thread_current->sleep_count, count);
 	//atomic_add(&thread_current->sleep_total, count); //FIXME: atomic_add is not tested
 	schedule();

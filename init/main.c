@@ -85,6 +85,7 @@ void thread4(void){
 	count4 = 0;
 	for(;;){
 		count4++;
+		sleep(1);
 	}
 }
 void thread5(void){
@@ -119,10 +120,10 @@ void thread_print(void)
 		thread_debug("thread2: ", 2, count2);
 		thread_debug("thread3: ", 3, count3);
 		thread_debug("thread4: ", 4, count4);
-		thread_debug("thread5: ", 5, count5);
-		thread_debug("thread6: ", 6, count6);
-		thread_debug("thread7: ", 7, count7);
-		thread_debug("thread8: ", 8, count8);
+//		thread_debug("thread5: ", 5, count5);
+//		thread_debug("thread6: ", 6, count6);
+//		thread_debug("thread7: ", 7, count7);
+//		thread_debug("thread8: ", 8, count8);
 		sleep(50);
 	}
 }
@@ -139,7 +140,11 @@ int main(void){
 	display_init();
 	kernel_init();           // initialize, disable interrupts
 //	newthread(&heartbeat,9, 250, 1);
-	newthread(&thread1, 0, 100, 5);
+	newthread(&thread1, 0, 100, 10);
+	newthread(&thread2, 1, 100, 10);
+	newthread(&thread3, 2, 100, 5);
+	newthread(&thread4, 3, 100, 10);
+	//newthread(&thread_print, 4, 200, 5);
  	kernel_launch(TIMESLICE); // doesn't return, interrupts enabled in here
   	return 0;             // this never executes
 }
