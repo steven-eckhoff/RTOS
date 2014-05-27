@@ -3,7 +3,7 @@
 
 include $(ROOT)/boards/$(BOARD)/makedefs
 
-IPATH := $(ROOT)/drivers \
+IPATH := $(ROOT)/drivers 	\
 	 $(ROOT)
 
 VAPTH := $(ROOT)/drivers

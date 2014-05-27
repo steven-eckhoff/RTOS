@@ -1,3 +1,7 @@
+/*! \file bsp.c
+ *  \brief A collection of driver routines that will eventually
+ *	   end up in separate driver files
+ */
 #include "hw_memmap.h"
 #include "hw_types.h"
 #include "sysctl.h"
@@ -10,6 +14,8 @@
 #include "interrupt.h"
 #include "lm3s8962.h"
 
+extern void reschedule(void);
+
 void heartbeat_init(void)
 {
 	led_init();
@@ -20,7 +26,7 @@ void heartbeat(void)
 {
 	for(;;) {
 		led_toggle();
-		sleep(1); // FIXME: Add a calculation based on the timeslice
+		reschedule();
 	}
 }
 
