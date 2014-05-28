@@ -10,8 +10,8 @@
 #include "include/list.h"
 #include "bsp.h"
 
-#define MAX_NUM_THREADS	13
-#define STACK_SIZE	1024
+#define MAX_NUM_THREADS	5
+#define STACK_SIZE	256
 #define PRIORITY_LEVELS	MAX_NUM_THREADS
 #define MAX_PRIORITY (PRIORITY_LEVELS - 1)
 

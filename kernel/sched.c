@@ -58,7 +58,7 @@ int newthread(void(*task)(void), u32_t priority, u32_t period, u32_t budget)
 	thread_new = &(thread_blocks[i]);
 
 	thread_new->stack_ptr		= thread_new->stack_bottom;
-	thread_new->id			= ++nextid;
+	thread_new->id			= nextid++;
 	thread_new->priority		= priority; //Based on period in RM
 	thread_new->period_reload	= period;
 	thread_new->period		= period;

@@ -25,4 +25,6 @@ Notes:
 		This is because I was unhappy with how it was organized and now I am
 		rewriting several pieces. For example there was no generic implementation
 		for the list data structure. 
-	
+
+5/27/2014 -	I have added a list API for the kernel. I have built and ran code using 
+		the new API, but it is not without bugs. I am currently ironing these out.
