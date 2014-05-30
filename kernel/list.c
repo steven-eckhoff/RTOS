@@ -7,17 +7,8 @@
 #include "include/types.h"
 #include "include/list.h"
 
-// FIXME: Are these needed to flag the attribute?
-static inline link_t *list_remove_linear_single(list_t *list, link_t *member) __attribute__((always_inline));
-static inline link_t *list_remove_linear_double(list_t *list, link_t *member) __attribute__((always_inline));
-static inline link_t *list_remove_circular_single(list_t *list, link_t *member) __attribute__((always_inline));
-static inline link_t *list_remove_circular_double(list_t *list, link_t *member) __attribute__((always_inline));
-s32_t static inline list_add_linear_single(list_t *list, link_t *member_next, link_t *member_new) __attribute__((always_inline));
-s32_t static inline list_add_linear_double(list_t *list, link_t *member_next, link_t *member_new) __attribute__((always_inline));
-s32_t static inline list_add_circular_single(list_t *list, link_t *member_next, link_t *member_new) __attribute__((always_inline));
-s32_t static inline list_add_circular_double(list_t *list, link_t *member_next, link_t *member_new) __attribute__((always_inline));
-
-static inline link_t *list_remove_linear_single(list_t *list, link_t *member)
+static inline __attribute__((always_inline))
+link_t *list_remove_linear_single(list_t *list, link_t *member)
 {
 	link_t *link_ptr;
 
@@ -60,7 +51,8 @@ static inline link_t *list_remove_linear_single(list_t *list, link_t *member)
 	return member;
 }
 
-static inline link_t *list_remove_linear_double(list_t *list, link_t *member)
+static inline __attribute__((always_inline))
+link_t *list_remove_linear_double(list_t *list, link_t *member)
 {	
 	if (NULL == list || NULL == member)
 		return NULL;
@@ -93,7 +85,8 @@ static inline link_t *list_remove_linear_double(list_t *list, link_t *member)
 	return member;
 }
 
-static inline link_t *list_remove_circular_single(list_t *list, link_t *member)
+static inline __attribute__((always_inline))
+link_t *list_remove_circular_single(list_t *list, link_t *member)
 {
 	link_t *link_ptr;
 
@@ -137,7 +130,8 @@ static inline link_t *list_remove_circular_single(list_t *list, link_t *member)
 	return member;
 }
 
-static inline link_t *list_remove_circular_double(list_t *list, link_t *member)
+static inline __attribute__((always_inline))
+link_t *list_remove_circular_double(list_t *list, link_t *member)
 {	
 	if (NULL == list || NULL == member)
 		return NULL;
@@ -166,7 +160,8 @@ static inline link_t *list_remove_circular_double(list_t *list, link_t *member)
 	return member;
 }
 
-s32_t static inline list_add_linear_single(list_t *list, link_t *member_next, link_t *member_new)
+s32_t static inline __attribute__((always_inline))
+list_add_linear_single(list_t *list, link_t *member_next, link_t *member_new)
 {
 	link_t *link_ptr;
 
@@ -203,7 +198,8 @@ s32_t static inline list_add_linear_single(list_t *list, link_t *member_next, li
 	return 0;
 }
 
-s32_t static inline list_add_linear_double(list_t *list, link_t *member_next, link_t *member_new)
+s32_t static inline __attribute__((always_inline))
+list_add_linear_double(list_t *list, link_t *member_next, link_t *member_new)
 {
 	if (NULL == list || NULL == member_new)
 		return -1;
@@ -235,7 +231,8 @@ s32_t static inline list_add_linear_double(list_t *list, link_t *member_next, li
 	return 0;
 }
 
-s32_t static inline list_add_circular_single(list_t *list, link_t *member_next, link_t *member_new)
+s32_t static inline __attribute__((always_inline))
+list_add_circular_single(list_t *list, link_t *member_next, link_t *member_new)
 {
 	link_t *link_ptr;
 
@@ -272,7 +269,8 @@ s32_t static inline list_add_circular_single(list_t *list, link_t *member_next, 
 
 	return 0;
 }
-s32_t static inline list_add_circular_double(list_t *list, link_t *member_next, link_t *member_new)
+s32_t static inline __attribute__((always_inline))
+list_add_circular_double(list_t *list, link_t *member_next, link_t *member_new)
 {
 	if (NULL == list || NULL == member_new)
 		return -1;
