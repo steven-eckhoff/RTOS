@@ -64,8 +64,9 @@ void semaphore_up(semaphore_t *s)
 		thread_ptr->blocked_on = NULL;
 
 		s->owner = thread_ptr;		
-	}		
+	} else {		
 		s->owner = NULL;
+	}
 
-		atomic_dec(&preempt_disable);
+	atomic_dec(&preempt_disable);
 }
