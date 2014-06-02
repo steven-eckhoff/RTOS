@@ -119,6 +119,8 @@ void thread8(void){
 	count8 = 0;
 	for(;;){
 		count8++;
+		semaphore_down(&sema4_display);
+		semaphore_up(&sema4_display);
 	}
 }
 
@@ -162,7 +164,7 @@ int main(void){
 	heartbeat_init();
 	display_init();
 	kernel_init();           // initialize, disable interrupts
-	newthread(&thread_print, 0, 5, 1);
+/*	newthread(&thread_print, 0, 5, 1);
 	newthread(&thread1, 1, 100, 1);
 	newthread(&thread2, 2, 100, 10);
 	newthread(&thread3, 3, 100, 5);
@@ -170,7 +172,7 @@ int main(void){
 	newthread(&thread5, 5, 100, 5);
 	newthread(&thread6, 6, 100, 5);
 	newthread(&thread7, 7, 100, 10);
-	newthread(&thread8, 8, 100, 10);
+*/	newthread(&thread8, 8, 100, 10);
 	newthread(&heartbeat,9, 250, 1);
  	kernel_launch(TIMESLICE); // doesn't return, interrupts enabled in here
   	return 0;             // this never executes

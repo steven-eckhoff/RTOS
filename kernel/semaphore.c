@@ -31,7 +31,7 @@ void semaphore_down(semaphore_t *s)
 
 		list_add(&kernel_threads, NULL, &thread_current->thread_list);
 
-		atomic_dec(&preempt_disable); //FIXME: This could me moved out
+		atomic_dec(&preempt_disable);
 	
 		reschedule();
 	} else {
@@ -52,6 +52,8 @@ void semaphore_up(semaphore_t *s)
 	// Preemption disabled because the scheduler runs in interrupt
 	//     context and accesses the data structures below.
 	atomic_inc(&preempt_disable);
+	
+	atomic_inc(&s->value);
 
 	if (NULL != list_get_head(&s->queue)) {
 
@@ -62,7 +64,8 @@ void semaphore_up(semaphore_t *s)
 		thread_ptr->blocked_on = NULL;
 
 		s->owner = thread_ptr;		
-	}
+	}		
+		s->owner = NULL;
 
 		atomic_dec(&preempt_disable);
 }
