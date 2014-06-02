@@ -30,7 +30,7 @@ void delay_it(u32_t count)
 int itoa10(unsigned long num, char *buf, const int buflen)
 {
 	int i, j;
-	char tmp[100];
+	static char tmp[100];
 
 	if (buflen < 2 || buflen > 100)
 		return -1;
@@ -46,15 +46,18 @@ int itoa10(unsigned long num, char *buf, const int buflen)
 		num = num / 10;
 	}
 
-	if (i == buflen) {
+	if (i == buflen && num != 0) { // num is too large to fit in buffer
 		return -1;
 	} else {
 		for (j = 0; j < i; j++) { // Reverse string for correct ordering
-			buf[j] = tmp[i - j - 1];
+			buf[j] = tmp[i - 1 - j];
 		}
-		buf[j] = '\0';
-		return 0;
+		if (j < buflen)
+			buf[j] = '\0';
+		else
+			return -1;
 	}
+	return 0;
 }
 
 void thread_debug(const char *name, unsigned long id, unsigned long value)
