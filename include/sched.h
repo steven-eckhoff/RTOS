@@ -18,31 +18,32 @@
 /*! \typedef
  */
 typedef struct thread {
-	u32_t *stack_top;
-	u32_t *stack_bottom;
-	u32_t *stack_ptr;
-	u32_t stack_size;
-	u32_t id;
-	u32_t priority;
-	u32_t period_reload;
-	u32_t period;
-	u32_t budget_reload;
-	u32_t budget;
-	u32_t run_count;
+	u32_t  *stack_top;
+	u32_t  *stack_bottom;
+	u32_t  *stack_ptr;
+	u32_t  stack_size;
+	u32_t  id;
+	u32_t  priority;
+	u32_t  period_reload;
+	u32_t  period;
+	u32_t  budget_reload;
+	u32_t  budget;
+	u32_t  run_count;
 	atomic_t sleep_count;
 	atomic_t sleep_total;
 	lock_t *spinning_on;
 	semaphore_t *blocked_on;
 	link_t thread_list;
 	link_t block_list;
-	u32_t stack[STACK_SIZE];
+	u32_t  stack[STACK_SIZE];
 } thread_t;
 
 //FIXME: Pull all of these out and extern them in each *.c that needs them
-extern atomic_t preempt_disable; //FIXME: Convert to IPC
-extern atomic_t schedule_now; //FIXME: Convert to IPC
-extern thread_t *thread_current;
-extern list_t kernel_threads;
+extern thread_t volatile thread_blocks[];
+extern atomic_t volatile preempt_disable; //FIXME: Convert to IPC
+extern atomic_t volatile schedule_now; //FIXME: Convert to IPC
+extern thread_t volatile *thread_current;
+extern list_t volatile kernel_threads;
 
 // Defined in arch/arm/cortexM3/sched_asm.S
 extern void schedule(void);

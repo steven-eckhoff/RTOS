@@ -86,9 +86,9 @@ AFLAGS=-mthumb         \
 
 CFLAGS=	-mthumb			\
 	-mcpu=cortex-m3		\
+	-Os			\
 	-ffunction-sections	\
 	-fdata-sections		\
-	-O0			\
 	-MD			\
 	-std=c99		\
 	-Wall			\

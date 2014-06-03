@@ -2,10 +2,6 @@
 #include "include/time.h"
 #include "include/atomic.h"
 
-extern thread_t thread_blocks[];
-extern atomic_t preempt_disable;
-extern atomic_t schedule_now;
-
 extern void schedule(void);
 
 void systick_handler (void) {

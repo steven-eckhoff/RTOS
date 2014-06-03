@@ -113,5 +113,4 @@ void static inline if_list_lock_spin_unlock(list_t *list)
 */
 #define member_of(ptr, type, member) ((type *)((char *)ptr - offset_of(type, member)))
 
-
 #endif // KERNEL_LIST_H

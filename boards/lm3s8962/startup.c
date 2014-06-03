@@ -33,6 +33,9 @@ extern void systick_handler(void);
 void ResetISR(void);
 static void NmiSR(void);
 static void FaultISR(void);
+static void MPUFaultISR(void);
+static void BusFaultISR(void);
+static void UsageFaultISR(void);
 static void IntDefaultHandler(void);
 
 //*****************************************************************************
@@ -47,7 +50,7 @@ extern int main(void);
 // Reserve space for the system stack.
 //
 //*****************************************************************************
-static unsigned long pulStack[64];
+static unsigned long pulStack[512];
 
 //*****************************************************************************
 //
@@ -63,9 +66,9 @@ void (* const g_pfnVectors[])(void) =
     ResetISR,                               // The reset handler
     NmiSR,                                  // The NMI handler
     FaultISR,                               // The hard fault handler
-    IntDefaultHandler,                      // The MPU fault handler
-    IntDefaultHandler,                      // The bus fault handler
-    IntDefaultHandler,                      // The usage fault handler
+    MPUFaultISR,                            // The MPU fault handler
+    BusFaultISR,                            // The bus fault handler
+    UsageFaultISR,                          // The usage fault handler
     0,                                      // Reserved
     0,                                      // Reserved
     0,                                      // Reserved
@@ -202,6 +205,39 @@ NmiSR(void)
 // for examination by a debugger.
 //
 //*****************************************************************************
+static void
+MPUFaultISR(void)
+{
+    //
+    // Enter an infinite loop.
+    //
+    while(1)
+    {
+    }
+}
+
+static void
+BusFaultISR(void)
+{
+    //
+    // Enter an infinite loop.
+    //
+    while(1)
+    {
+    }
+}
+
+static void
+UsageFaultISR(void)
+{
+    //
+    // Enter an infinite loop.
+    //
+    while(1)
+    {
+    }
+}
+
 static void
 FaultISR(void)
 {

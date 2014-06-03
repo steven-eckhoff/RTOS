@@ -30,8 +30,20 @@ void heartbeat(void)
 	}
 }
 
+void faults_init(void)
+{
+	unsigned long tmp;
+
+	tmp = NVIC_SYS_HND_CTRL_R;
+	tmp = tmp | ( NVIC_SYS_HND_CTRL_MEM | NVIC_SYS_HND_CTRL_BUS
+			| NVIC_SYS_HND_CTRL_USAGE );
+	NVIC_SYS_HND_CTRL_R = tmp;
+}
+
 void board_launch(unsigned long slice)
 {
+	faults_init();
+	
 	IntMasterEnable();
 
 	SysTickPeriodSet(slice);

@@ -40,6 +40,7 @@ void semaphore_down(semaphore_t *s)
 	}
 	
 	atomic_dec(&preempt_disable);
+
 }
 
 /*! \brief Use this to make the semaphore available for other threads
@@ -52,7 +53,7 @@ void semaphore_up(semaphore_t *s)
 	// Preemption disabled because the scheduler runs in interrupt
 	//     context and accesses the data structures below.
 	atomic_inc(&preempt_disable);
-	
+		
 	atomic_inc(&s->value);
 
 	if (NULL != list_get_head(&s->queue)) {
@@ -69,4 +70,5 @@ void semaphore_up(semaphore_t *s)
 	}
 
 	atomic_dec(&preempt_disable);
+
 }

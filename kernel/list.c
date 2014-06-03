@@ -8,7 +8,7 @@
 #include "include/list.h"
 
 static inline __attribute__((always_inline))
-link_t *list_remove_linear_single(list_t *list, link_t *member)
+link_t  *list_remove_linear_single(list_t  *list, link_t  *member)
 {
 	link_t *link_ptr;
 
@@ -52,7 +52,7 @@ link_t *list_remove_linear_single(list_t *list, link_t *member)
 }
 
 static inline __attribute__((always_inline))
-link_t *list_remove_linear_double(list_t *list, link_t *member)
+link_t  *list_remove_linear_double(list_t  *list, link_t  *member)
 {	
 	if (NULL == list || NULL == member)
 		return NULL;
@@ -86,7 +86,7 @@ link_t *list_remove_linear_double(list_t *list, link_t *member)
 }
 
 static inline __attribute__((always_inline))
-link_t *list_remove_circular_single(list_t *list, link_t *member)
+link_t  *list_remove_circular_single(list_t  *list, link_t  *member)
 {
 	link_t *link_ptr;
 
@@ -131,7 +131,7 @@ link_t *list_remove_circular_single(list_t *list, link_t *member)
 }
 
 static inline __attribute__((always_inline))
-link_t *list_remove_circular_double(list_t *list, link_t *member)
+link_t  *list_remove_circular_double(list_t  *list, link_t  *member)
 {	
 	if (NULL == list || NULL == member)
 		return NULL;
@@ -161,7 +161,7 @@ link_t *list_remove_circular_double(list_t *list, link_t *member)
 }
 
 s32_t static inline __attribute__((always_inline))
-list_add_linear_single(list_t *list, link_t *member_next, link_t *member_new)
+list_add_linear_single(list_t  *list, link_t  *member_next, link_t  *member_new)
 {
 	link_t *link_ptr;
 

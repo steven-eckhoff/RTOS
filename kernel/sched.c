@@ -6,15 +6,15 @@
 #include "stack.h"
 #include "include/sched.h"
 
-thread_t thread_blocks[MAX_NUM_THREADS];
-list_new(kernel_threads, HEAD_EMPTY, TAIL_EMPTY, SINGLE_LINK, CIRCULAR, LOCKED);
-thread_t *thread_current;
+thread_t volatile thread_blocks[MAX_NUM_THREADS];
+volatile list_new(kernel_threads, HEAD_EMPTY, TAIL_EMPTY, SINGLE_LINK, CIRCULAR, LOCKED);
+thread_t volatile *thread_current;
 
 u32_t nextid;
 u32_t numthreads;
 u32_t timeslice;
-atomic_t preempt_disable;
-atomic_t schedule_now;
+atomic_t volatile preempt_disable;
+atomic_t volatile schedule_now;
 
 /*! \brief initializes the kernel threads. Later this will change for dynamic allocation
  */
@@ -142,8 +142,8 @@ int newthread(void(*task)(void), u32_t priority, u32_t period, u32_t budget)
 
 void __attribute__((optimize(0))) nextthread(void)
 {
-	static thread_t *thread_ptr; //FIXME: Something not stack friendly
-	static link_t *list_ptr;
+	thread_t static *thread_ptr; //FIXME: Something not stack friendly
+	link_t static *list_ptr;
 
 	// Higher priority threads appear first in the list
 
