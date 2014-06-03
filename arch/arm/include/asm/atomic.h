@@ -21,7 +21,7 @@ atomic_inc(atomic_t  *a)
 "	bne 1b\n"
 	: "+r" (res)
 	: "m" (a->value)
-	);
+	: "memory");
 
 	return (res >= 0 ? true : false);
 }
@@ -41,7 +41,7 @@ atomic_dec(atomic_t  *a)
 "	bne 1b\n"
 	: "+r" (res)
 	: "m" (a->value)
-	);
+	: "memory");
 
 	return (res < 0 ? true : false);
 }
@@ -59,7 +59,7 @@ atomic_write(atomic_t  *a, s32_t value)
 "	bne 1b\n"
 	:
 	: "m" (a->value), "r" (value)
-	); 
+	: "memory"); 
 }
 
 /*! \brief Atomically adds one value to another
@@ -75,7 +75,7 @@ atomic_add(atomic_t  *a, s32_t value)
 "	bne 1b\n"
 	:
 	: "m" (a->value), "r" (value)
-	);
+	: "memory");
 }
 
 #endif // ATOMIC_H

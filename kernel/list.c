@@ -248,17 +248,17 @@ list_add_circular_single(list_t *list, link_t *member_next, link_t *member_new)
 		list->tail->next = member_new;
 		list->head = member_new;
 	} else if (NULL == member_next) { // Insert as tail
-		member_new->next = NULL;
+		member_new->next = list->head;
 		list->tail->next = member_new;
 		list->tail = member_new;
 	} else {
 		link_ptr = list->head;	
 
-		while ((NULL != link_ptr) && (link_ptr->next != member_next))
+		while (link_ptr->next != member_next) {
 			link_ptr = link_ptr->next;
-
-		if (NULL == link_ptr) // member_next not in list
-			return -1;
+			if (link_ptr == list->head)
+				return -1;
+		}
 
 		member_new->next = member_next;
 
@@ -269,6 +269,7 @@ list_add_circular_single(list_t *list, link_t *member_next, link_t *member_new)
 
 	return 0;
 }
+
 s32_t static inline __attribute__((always_inline))
 list_add_circular_double(list_t *list, link_t *member_next, link_t *member_new)
 {

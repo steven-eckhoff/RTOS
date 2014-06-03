@@ -71,28 +71,30 @@ void thread_debug(const char *name, unsigned long id, unsigned long value)
 	for(i = 0; name[i] != '\0'; i++)
 		buf[i] = name[i];
 	itoa10(value, &(buf[i]), 25);
-//	semaphore_down(&sema4_display);
+	semaphore_down(&sema4_display);
 	string_draw(buf, 0, (id - 1) * 11, 11);
-//	semaphore_up(&sema4_display);
+	semaphore_up(&sema4_display);
 }
 
 void thread1(void){
 	count1 = 0;
 	for(;;){
 		count1++;
+		thread_debug("thread1: ", 1, count1);
 	}
 }
 void thread2(void){
 	count2 = 0;      
 	for(;;){
-		__asm__ __volatile__ ("" : : : "memory");
 		count2++;
+		thread_debug("thread2: ", 2, count2);
 	}
 }
 void thread3(void){
 	count3 = 0;          
 	for(;;){
 		count3++;
+		thread_debug("thread3: ", 3, count3);
 	}
 }
 void thread4(void){
@@ -123,10 +125,6 @@ void thread8(void){
 	count8 = 0;
 	for(;;){
 		count8++;
-		semaphore_down(&sema4_display);
-		semaphore_up(&sema4_display);
-//		delay_it(100);
-//		delay_it(100);
 	}
 }
 
@@ -170,16 +168,16 @@ int main(void){
 	heartbeat_init();
 	display_init();
 	kernel_init();           // initialize, disable interrupts
-	newthread(&thread_print, 0, 5, 1);
+//	newthread(&thread_print, 0, 5, 1);
 	newthread(&thread1, 1, 100, 1);
 	newthread(&thread2, 2, 100, 10);
 	newthread(&thread3, 3, 100, 5);
-	newthread(&thread4, 4, 100, 5);
+/*	newthread(&thread4, 4, 100, 5);
 	newthread(&thread5, 5, 100, 5);
 	newthread(&thread6, 6, 100, 5);
 	newthread(&thread7, 7, 100, 10);
 	newthread(&thread8, 8, 100, 10);
-	newthread(&heartbeat,9, 250, 1);
+*/	newthread(&heartbeat,9, 250, 1);
  	kernel_launch(TIMESLICE); // doesn't return, interrupts enabled in here
   	return 0;             // this never executes
 }

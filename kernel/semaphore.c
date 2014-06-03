@@ -19,7 +19,8 @@ extern void reschedule(void);
  *        the semaphore is protecting. Also do not use semaphores
  *        in interrupt context.
  */
-void __attribute__((optimize(0))) semaphore_down(semaphore_t *s)
+void __attribute__((optimize(0))) 
+semaphore_down(semaphore_t *s)
 {
 	// Preemption disabled because the scheduler runs in interrupt
 	//     context and accesses the data structures below.
@@ -29,23 +30,23 @@ void __attribute__((optimize(0))) semaphore_down(semaphore_t *s)
 		
 		thread_current->blocked_on = s;
 
-		list_add(&kernel_threads, NULL, &thread_current->thread_list);
+		list_add(&s->queue, NULL, &thread_current->block_list);
 
 		atomic_dec(&preempt_disable);
 	
 		reschedule();
 	} else {
 
-		s->owner = thread_current;	
-	}
-	
-	atomic_dec(&preempt_disable);
+		s->owner = thread_current;
 
+		atomic_dec(&preempt_disable);
+	}
 }
 
 /*! \brief Use this to make the semaphore available for other threads
  */
-void __attribute__((optimize(0))) semaphore_up(semaphore_t *s)
+void __attribute__((optimize(0))) 
+semaphore_up(semaphore_t *s)
 {
 	link_t *list_ptr;
 	thread_t *thread_ptr;
