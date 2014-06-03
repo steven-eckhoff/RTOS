@@ -8,7 +8,8 @@
 
 /*! \brief Increments the value of an atomic type 
  */
-bool static inline atomic_inc(atomic_t  *a)
+bool static inline __attribute__((always_inline))
+atomic_inc(atomic_t  *a)
 {
 	s32_t res = 0;
 
@@ -27,7 +28,8 @@ bool static inline atomic_inc(atomic_t  *a)
 
 /*! \brief Decrements the value of an atomic type
  */
-bool static inline atomic_dec(atomic_t  *a)
+bool static inline __attribute__((always_inline))
+atomic_dec(atomic_t  *a)
 {
 	s32_t res = 0;
 
@@ -46,7 +48,8 @@ bool static inline atomic_dec(atomic_t  *a)
 
 /*! \brief Writes value to atomic type
  */
-void static inline atomic_write(atomic_t  *a, s32_t value)
+void static inline __attribute__((always_inline))
+atomic_write(atomic_t  *a, s32_t value)
 {
 	__asm__ __volatile__ (
 "	mov %1, r1\n"
@@ -61,7 +64,8 @@ void static inline atomic_write(atomic_t  *a, s32_t value)
 
 /*! \brief Atomically adds one value to another
  */
-void static inline atomic_add(atomic_t  *a, s32_t value)
+void static inline __attribute__((always_inline))
+atomic_add(atomic_t  *a, s32_t value)
 {
 	__asm__ __volatile__ (
 "	ldrex r0, %0\n"

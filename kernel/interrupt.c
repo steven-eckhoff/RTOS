@@ -2,8 +2,6 @@
 #include "include/time.h"
 #include "include/atomic.h"
 
-extern void schedule(void);
-
 void systick_handler (void) {
 	unsigned long i;
 

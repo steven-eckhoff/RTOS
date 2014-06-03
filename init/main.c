@@ -9,16 +9,16 @@
 #define digi2char(x) ('0' + x)
 
 unsigned long numcreated;
-unsigned long count1;   // number of times thread1 loops
-unsigned long count2;   // number of times thread2 loops
-unsigned long count3;   // number of times thread3 loops
-unsigned long count4;   // number of times thread4 loops
-unsigned long count5;   // number of times thread5 loops
-unsigned long count6;
-unsigned long count7;
-unsigned long count8;
+unsigned long volatile count1;   // number of times thread1 loops
+unsigned long volatile count2;   // number of times thread2 loops
+unsigned long volatile count3;   // number of times thread3 loops
+unsigned long volatile count4;   // number of times thread4 loops
+unsigned long volatile count5;   // number of times thread5 loops
+unsigned long volatile count6;
+unsigned long volatile count7;
+unsigned long volatile count8;
 
-volatile semaphore_new(sema4_display, 1);
+semaphore_new(sema4_display, 1);
 
 void delay_it(u32_t count)
 {
@@ -85,6 +85,7 @@ void thread1(void){
 void thread2(void){
 	count2 = 0;      
 	for(;;){
+		__asm__ __volatile__ ("" : : : "memory");
 		count2++;
 	}
 }
@@ -177,7 +178,7 @@ int main(void){
 	newthread(&thread5, 5, 100, 5);
 	newthread(&thread6, 6, 100, 5);
 	newthread(&thread7, 7, 100, 10);
-//	newthread(&thread8, 8, 100, 10);
+	newthread(&thread8, 8, 100, 10);
 	newthread(&heartbeat,9, 250, 1);
  	kernel_launch(TIMESLICE); // doesn't return, interrupts enabled in here
   	return 0;             // this never executes
