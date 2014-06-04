@@ -20,20 +20,17 @@ unsigned long volatile count8;
 
 semaphore_new(sema4_display, 1);
 
-void delay_it(u32_t count)
+void delay(u32_t count)
 {
-	u32_t arr[25];
-	atomic_inc(&preempt_disable);
 	while(count > 0) {
 		--count;
 	}
-	atomic_dec(&preempt_disable);
 }
 
 int itoa10(unsigned long num, char *buf, const int buflen)
 {
 	int i, j;
-	static char tmp[100];
+	char tmp[25];
 
 	if (buflen < 2 || buflen > 100)
 		return -1;
@@ -63,7 +60,7 @@ int itoa10(unsigned long num, char *buf, const int buflen)
 	return 0;
 }
 
-void thread_debug(const char *name, unsigned long id, unsigned long value)
+void thread_debug_(const char *name, unsigned long id, unsigned long value)
 {
 	int i;
 	char buf[25];
@@ -75,6 +72,12 @@ void thread_debug(const char *name, unsigned long id, unsigned long value)
 	string_draw(buf, 0, (id - 1) * 11, 11);
 	semaphore_up(&sema4_display);
 }
+
+#define thread_debug(name, id, value)				\
+do {								\
+	if(value % 1 == 0)					\
+		thread_debug_(name, id, value);			\
+} while(0)
 
 void thread1(void){
 	count1 = 0;
@@ -101,30 +104,35 @@ void thread4(void){
 	count4 = 0;
 	for(;;){
 		count4++;
+		thread_debug("thread4: ", 4, count4);
 	}
 }
 void thread5(void){
 	count5 = 0;
 	for(;;){
 		count5++;
+		thread_debug("thread5: ", 5, count5);
 	}
 }
 void thread6(void){
 	count6 = 0;
 	for(;;){
 		count6++;
+		thread_debug("thread6: ", 6, count6);
 	}
 }
 void thread7(void){
 	count7 = 0;
 	for(;;){
 		count7++;
+		thread_debug("thread7: ", 7, count7);
 	}
 }
 void thread8(void){
 	count8 = 0;
 	for(;;){
 		count8++;
+		thread_debug("thread8: ", 8, count8);
 	}
 }
 
@@ -172,12 +180,12 @@ int main(void){
 	newthread(&thread1, 1, 100, 1);
 	newthread(&thread2, 2, 100, 10);
 	newthread(&thread3, 3, 100, 5);
-/*	newthread(&thread4, 4, 100, 5);
+	newthread(&thread4, 4, 100, 5);
 	newthread(&thread5, 5, 100, 5);
 	newthread(&thread6, 6, 100, 5);
 	newthread(&thread7, 7, 100, 10);
 	newthread(&thread8, 8, 100, 10);
-*/	newthread(&heartbeat,9, 250, 1);
+	newthread(&heartbeat,9, 250, 1);
  	kernel_launch(TIMESLICE); // doesn't return, interrupts enabled in here
   	return 0;             // this never executes
 }

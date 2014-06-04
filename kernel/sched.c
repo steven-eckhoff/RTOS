@@ -13,8 +13,10 @@ thread_t *thread_current;
 u32_t nextid;
 u32_t numthreads;
 u32_t timeslice;
-atomic_t preempt_disable;
-atomic_t schedule_now;
+atomic_new(preempt_disable, 0);
+atomic_new(schedule_now, 0);
+atomic_new(switch_count, 0);
+atomic_new(budget_swell, 0);
 
 /*! \brief initializes the kernel threads. Later this will change for dynamic allocation
  */
@@ -175,7 +177,12 @@ void __attribute__((optimize(0))) nextthread(void)
 
 	++(thread_current->run_count);
 
+	if (0 == thread_current->budget)
+		budget_swell.value++;
+
 	budget_consume(thread_current);
+
+	atomic_inc(&switch_count);
 }
 
 thread_t *firstthread(void)

@@ -16,10 +16,14 @@ typedef struct {
  *  \note Only accurate if preemption is disabled. This is just to keep the 
  *        interface with atomics consistent. This does not guarantee atomicity.
  */
-s32_t static inline atomic_read(atomic_t *a)
+s32_t static inline // __attribute__((always_inline)) //FIXME: Compiler creates junk
+atomic_read(atomic_t *a)
 {
 	return a->value;
 }
+
+
+// #define atomic_read(x) ((x)->value) FIXME: This also doesn't work
 
 /*! \def Creates a new atomic object
  */

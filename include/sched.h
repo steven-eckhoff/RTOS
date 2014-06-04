@@ -44,6 +44,7 @@ extern atomic_t preempt_disable; //FIXME: Convert to IPC
 extern atomic_t schedule_now; //FIXME: Convert to IPC
 extern thread_t *thread_current;
 extern list_t kernel_threads;
+extern atomic_t switch_count;
 
 // Defined in arch/arm/cortexM3/sched_asm.S
 extern void schedule(void);

@@ -9,6 +9,14 @@
 // Defined in arch/arm/cortexM3/sched_asm.S 
 extern void reschedule(void);
 
+void static inline __attribute__((always_inline))
+wait_for_switch(void)
+{
+	volatile s32_t tmp = atomic_read(&switch_count);
+	
+	while (tmp == atomic_read(&switch_count));
+}
+
 //extern thread_t *thread_current; FIXME: Add this and pull it out of sched.h
 
 /*! \brief Use to aquire the semaphore or be blocked and be placed 
@@ -35,6 +43,8 @@ semaphore_down(semaphore_t *s)
 		atomic_dec(&preempt_disable);
 	
 		reschedule();
+	
+		wait_for_switch();
 	} else {
 
 		s->owner = thread_current;
