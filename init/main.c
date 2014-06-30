@@ -6,8 +6,6 @@
 #include "include/kernel.h"
 //#include "include/aperiodic.h"
 
-#define digi2char(x) ('0' + x)
-
 unsigned long numcreated;
 unsigned long volatile count1;   // number of times thread1 loops
 unsigned long volatile count2;   // number of times thread2 loops
@@ -30,9 +28,11 @@ void delay(u32_t count)
 int itoa10(unsigned long num, char *buf, const int buflen)
 {
 	int i, j;
-	char tmp[25];
+	#define BUFFER_MIN 2
+	#define TMP_BUFFER_LEN 100
+	static char tmp_buffer[TMP_BUFFER_LEN];
 
-	if (buflen < 2 || buflen > 100)
+	if (buflen < BUFFER_MIN || buflen > TMP_BUFFER_LEN)
 		return -1;
 
 	if (0 == num) {
@@ -42,7 +42,7 @@ int itoa10(unsigned long num, char *buf, const int buflen)
 	}
 
 	for (i = 0; i < buflen && num > 0; i++) {
-		tmp[i] = digi2char(num % 10);
+		tmp_buffer[i] = '0' + (num % 10);
 		num = num / 10;
 	}
 
@@ -50,7 +50,7 @@ int itoa10(unsigned long num, char *buf, const int buflen)
 		return -1;
 	} else {
 		for (j = 0; j < i; j++) { // Reverse string for correct ordering
-			buf[j] = tmp[i - 1 - j];
+			buf[j] = tmp_buffer[i - 1 - j];
 		}
 		if (j < buflen)
 			buf[j] = '\0';
@@ -185,7 +185,7 @@ int main(void){
 	newthread(&thread6, 6, 100, 5);
 	newthread(&thread7, 7, 100, 10);
 	newthread(&thread8, 8, 100, 10);
-	newthread(&heartbeat,9, 250, 1);
+	newthread(&heartbeat,0, 250, 1);
  	kernel_launch(TIMESLICE); // doesn't return, interrupts enabled in here
   	return 0;             // this never executes
 }
