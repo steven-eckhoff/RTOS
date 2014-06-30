@@ -29,8 +29,8 @@ int itoa10(unsigned long num, char *buf, const int buflen)
 {
 	int i, j;
 	#define BUFFER_MIN 2
-	#define TMP_BUFFER_LEN 100
-	static char tmp_buffer[TMP_BUFFER_LEN];
+	#define TMP_BUFFER_LEN 10
+	char tmp_buffer[TMP_BUFFER_LEN];
 
 	if (buflen < BUFFER_MIN || buflen > TMP_BUFFER_LEN)
 		return -1;
