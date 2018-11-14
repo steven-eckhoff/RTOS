@@ -1,7 +1,7 @@
 RTOS
 ====
 
-This is an RTOS that I started in school and now I am working to improve and extend it.
+This is an RTOS that I started in school and I WAS working to improve and extend it. I may try to get this running on another board I have laying around, but I don't think it will happen any time soon.
 
 Videos:
 
